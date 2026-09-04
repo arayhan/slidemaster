@@ -62,6 +62,17 @@ an index" is not evidence.
 
 ## This project's data layer
 
-TODO(content) — the database and version, the access layer (raw SQL, query
-builder, or ORM, and which), the table and column naming convention, and how
-migrations are actually run in each environment.
+- **Database**: SQLite, accessed through `better-sqlite3` (synchronous, in-process).
+  One file, path from `SLIDEMASTER_DB_PATH` (default `./db/slidemaster.sqlite`).
+- **Access layer**: hand-written parameterised SQL in `src/server/db/`. No ORM, no
+  query builder. Every statement is `db.prepare(...)` with bound parameters.
+- **Naming**: `snake_case` tables and columns; plural table names (`decks`, `tags`).
+  Timestamps are `TEXT` ISO-8601 UTC.
+- **Migrations**: plain `.sql` files in `db/migrations/`, numbered `NNN_name.sql`,
+  applied in order by `pnpm --silent db:migrate` (a script under `.claude/scripts/`
+  until the product needs its own). There is one environment — the user's machine —
+  so "manually run" means: run the script after pulling a change that adds a file.
+- **The index is derived.** `decks` and `tags` rows are a cache of what is in the
+  `.md` files under `SLIDEMASTER_DECKS_DIR`. A `reconcile` routine (and a
+  `pnpm db:rebuild` that drops and rebuilds from scratch) is the source of truth
+  path; see `docs/rules/testing.md` for the invariant this protects.

@@ -196,5 +196,13 @@ Rebase the worktree's branch onto the default branch, run the checks **in the
 worktree**, then merge. Never merge one worktree's branch into another's — that
 couples two lines of work that were split precisely so they would stay apart.
 
-TODO(content) — this project's branch and PR convention: the default branch name,
-whether PRs are required, who reviews, and whether merges squash.
+Solo project, trunk-based:
+
+- Default branch is `main`. Work can land directly on `main` for small, low-risk
+  changes.
+- Anything spanning more than a couple of files, or touching the render pipeline
+  or the SQLite schema, goes on a short-lived `feat/…` or `fix/…` branch and is
+  self-reviewed on a diff before merge — no second reviewer exists.
+- Merge with `--no-ff` for branches so the branch point stays visible in history;
+  no squash requirement.
+- `main` stays green: `pnpm lint` and `pnpm test` pass before every merge.

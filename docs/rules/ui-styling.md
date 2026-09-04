@@ -57,6 +57,15 @@ frame. Details are in [accessibility.md](./accessibility.md).
 
 ## This project's conventions
 
-TODO(content) — anything not already covered by DESIGN.md: a component library in
-use and how far it may be customised, a dark-mode strategy, an icon convention.
-Delete this section if DESIGN.md covers it all.
+- **No component library.** Tailwind utilities + the tokens in `src/styles/tokens.css`.
+  If a primitive is reached for twice, it becomes a component in `src/components/`,
+  not an install.
+- **Icons**: `react-icons` only, always through the `Icon` wrapper so size and
+  stroke stay consistent. Pick from one icon set (`react-icons/lu`, Lucide) unless
+  there is a real gap.
+- **No dark mode** in Phase 1. Tokens are structured to allow it later; do not add
+  a `dark:` variant or a theme toggle now.
+- **The app's CSS never touches slide content.** Rendered slides are Marp HTML
+  inside `PreviewFrame`'s sandboxed iframe. Their appearance is 100% the Marp
+  theme (`src/theme/*.css`), which is plain CSS and is **not** run through
+  Tailwind or PostCSS — a utility class written on a slide element does nothing.

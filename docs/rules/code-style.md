@@ -144,6 +144,4 @@ removed two of those on purpose.
 
 ## Project-specific style rules
 
-TODO(content) — anything this project does differently from the above: a naming
-convention the team already uses, a file layout the framework forces, a formatter
-setting that is not the default. Delete this section if there is nothing.
+Nothing beyond the conventions above.

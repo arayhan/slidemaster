@@ -83,12 +83,16 @@ interactive element, an anchor with no `href`. It cannot check contrast, focus
 order, or whether your `alt` text is meaningful. Those are read by a person, and
 that person is the reviewer.
 
-TODO(content) — record here once `eslint-plugin-jsx-a11y` is wired at `error`
-severity, so a violation fails the build rather than printing a warning nobody
-reads.
+`eslint-plugin-jsx-a11y` runs at `warn`, not `error` — this is a single-user
+personal tool and a11y lint does not block the build. Warnings are still expected
+to be cleared in review; a standing pile of them defeats the point.
 
 ## This project's requirements
 
-TODO(content) — any conformance target the engagement commits to (WCAG 2.2 AA is
-the usual one), assistive technology that must be tested against, and any surface
-with a stricter bar than the rest.
+No formal conformance target (no WCAG commitment) — the tool has one user.
+
+One hard functional requirement: **present mode must be fully keyboard-operable.**
+Arrow keys / Space / PageUp-PageDown move between slides, `f` toggles fullscreen,
+`Esc` exits. This is tested (see `docs/rules/testing.md`), not just asserted.
+Everything else is best-effort: real `alt` text on deck images, visible focus
+using `--color-accent`, and semantic headings in the library.

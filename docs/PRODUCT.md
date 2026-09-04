@@ -1,6 +1,5 @@
 # SlideMaster — Product
 
-**Pre-filled from the raygent guided interview** (docs/interview.json). Run /bootstrap-project to deepen any remaining <TODO(content)> sections.
 
 ## Problem & solution
 
@@ -38,7 +37,12 @@ Within 6-12 months: at least 8 real presentations delivered from slidemaster dec
 
 ## What must never be fabricated
 
-<TODO(content)> — content, numbers, and claims that need a real source rather than a placeholder.
+Slide content is authored by the user in the deck `.md` file. The app renders it; it never invents it.
+
+- No generated headline, bullet, quote, citation, statistic, or reference ever appears in a rendered deck. If the `.md` does not supply it, the slide does without it.
+- No `Lorem ipsum` or placeholder copy in a rendered deck, present view, or exported artifact. Placeholder copy is allowed only in app chrome (empty states, examples in docs) and carries the placeholder marker (see `AGENTS.md` hard rule 2).
+- The `profile`, `contact`, and `references` section slides display only the fields the deck's frontmatter provides — no inferred job title, employer, social handle, or logo.
+- Deck metadata shown in the library (title, topic, tags, dates) comes from the `.md` frontmatter and the filesystem. The app does not guess a topic or backfill a date.
 
 ## Decisions still the product owner's
 

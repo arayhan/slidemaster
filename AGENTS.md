@@ -1,6 +1,6 @@
 # SlideMaster
 
-<PROJECT_DESCRIPTION> — one or two sentences: who the user is, what the site does, and the commercial shape of the engagement (a product build). Ship the current phase's Definition of Done; do not explore alternatives.
+SlideMaster is a local-first web app for one user — a person who gives talks frequently and already writes in Markdown and git. It renders a deck `.md` (per-slide frontmatter, `---` splits) to HTML slides via `@marp-team/marp-core` through a single finalized editorial template, keeps a SQLite index of decks by topic and tag, and presents fullscreen in the browser. Not a commercial product: no accounts, no hosting, no multi-user. Ship the current phase's Definition of Done; do not explore alternatives.
 
 **This file is the source of truth for how to work in this repo.** `CLAUDE.md` is a pointer to it, not a second copy — edit this file, never that one. It is named `AGENTS.md` because that is the convention every coding agent reads, so the instructions do not have to be duplicated per tool and cannot drift apart.
 
@@ -69,13 +69,13 @@ A `Stop` hook (`.claude/hooks/check-agentsmd.ps1`) nudges **once per session** w
 | Phase | Scope | Status |
 |---|---|---|
 | 0 | Walking skeleton + deploy | Build first |
-| 1 | <SCOPE> | Build now |
-| 2 | <SCOPE> | After 1 |
-| 3 | <SCOPE> | After 2 |
+| 1 | Marp-core render pipeline; the one editorial template + `tokens.css`; section-type slides (title, profile, intermezzo, quote, references, contact, closing); images, fenced code, text highlights, logo, react-icons; routes `/decks`, `/edit/:id` (live preview + file watch), `/present/:id` (fullscreen, keyboard nav); SQLite metadata index, rebuildable from the `.md` files | Build now |
+| 2 | LaTeX (KaTeX); PDF export via Marp; presenter view — notes, dual-screen, timer | After 1 |
+| 3 | Multiple templates + per-deck switching; layout modes (masonry/grid, left-content / right full-bleed image) | After 2 |
 
 See [docs/PRD.md](docs/PRD.md) for the task breakdown per phase, and `docs/tasks/` for the work orders.
 
-**Repo scope**: <WHAT_BELONGS_HERE>. <WHAT_BELONGS_IN_A_SIBLING_REPO_IF_ANY>.
+**Repo scope**: everything is in this one repo — app, the one Marp theme, `db/migrations/`, and the user's deck `.md` files under `decks/` (git-tracked, the source of truth). No sibling repo. If the theme is ever open-sourced it gets extracted then, not pre-split now.
 
 ## Folder structure
 
@@ -117,7 +117,7 @@ All three are ESLint `no-restricted-imports` zones. Configure them in the first 
 
 ```bash
 pnpm install
-cp .env.example .env   # fill: <REQUIRED_ENV_VARS>
+cp .env.example .env   # optional — SLIDEMASTER_DB_PATH, SLIDEMASTER_DECKS_DIR (both have working defaults)
 pnpm dev                # http://localhost:3000
 ```
 

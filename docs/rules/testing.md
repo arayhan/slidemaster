@@ -66,6 +66,24 @@ three and reports what it saw.
 
 ## The expensive bug
 
-TODO(content) — the single most costly bug this project could ship, and the test
-that makes it impossible. Filled during the first-run interview; this is the one
-entry in this file worth more than all the others.
+**The SQLite index drifts from the `.md` files and the library shows a lie** —
+a deck that was renamed, moved, or deleted on disk still appears; its topic is
+stale; `/present/:id` opens a dead path. Because nothing errors, it is found only
+when a talk is opened in front of an audience.
+
+**Invariant**: the `decks` / `tags` tables are a pure derived view of the files
+under `SLIDEMASTER_DECKS_DIR`. After any `reconcile`, the set of `decks` rows
+equals the set of deck `.md` files exactly — no orphan rows, no stale `path`,
+`topic`, or `updated_at` — and `pnpm db:rebuild` from an empty database produces
+byte-identical rows to an incremental reconcile over the same tree.
+
+**Tests that make it impossible** (integration, over a temp decks dir + temp DB):
+
+- Add a `.md` file → reconcile → row exists with the right `topic` and `tags`.
+- Rename / move a file → reconcile → exactly one row, `path` updated, same `id`
+  if the frontmatter `id` is unchanged.
+- Delete a file → reconcile → row and its `tags` gone.
+- Edit frontmatter (`topic`, `tags`, `title`) → reconcile → row reflects it.
+- `db:rebuild` and incremental reconcile over the same tree yield identical rows.
+- Property test: apply a random sequence of add/rename/edit/delete ops, reconcile
+  after each, assert `rows == filesystem` every time.

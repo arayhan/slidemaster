@@ -109,6 +109,18 @@ the code rather than from a textbook.
 
 ## This project's principles
 
-TODO(content) — a principle this project holds that the above does not cover:
-a performance budget with a number in it, a dependency policy, a rule about what
-gets built versus bought. Delete this section if there is nothing.
+1. **Wrap, don't build.** The Markdown-to-slides renderer is `@marp-team/marp-core`.
+   We do not fork it, reimplement slide splitting, or write a parser. Owned code
+   is the one template, the catalog, and the present shell — nothing that Marp,
+   `gray-matter`, or a syntax highlighter already does.
+
+2. **The `.md` files are the only source of truth.** The SQLite index is a
+   derived cache. It must be fully reconstructible from the deck files by one
+   command, and no feature may store deck content that exists nowhere else.
+
+3. **One template, finalized.** Phase 1 ships exactly one master template. "Make
+   it configurable" is a Phase 3 conversation, not a Phase 1 shortcut.
+
+4. **Dependency budget.** A new runtime dependency needs a one-line justification
+   and `engineering-lead` sign-off (see `AGENTS.md` roles). Prefer the platform
+   and what is already installed.

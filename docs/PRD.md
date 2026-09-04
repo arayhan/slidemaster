@@ -1,6 +1,5 @@
 # SlideMaster — Product Spec
 
-**Pre-filled from the raygent guided interview** (docs/interview.json). Run /bootstrap-project to deepen any remaining <TODO(content)> sections.
 
 ## Phase 1
 
@@ -11,12 +10,23 @@
 
 ## Phase 2
 
-**Scope**: <TODO(content)>
+**Scope**: LaTeX math via KaTeX in decks. PDF export of a deck via Marp. Presenter view — speaker notes rendered from per-slide frontmatter, a dual-screen presenter window, and a talk timer.
+
+**Definition of Done**:
+- [ ] A deck with `$...$` / `$$...$$` renders math correctly in preview, present, and PDF.
+- [ ] "Export PDF" produces a paginated PDF matching the present view slide-for-slide.
+- [ ] Present mode opens a presenter window (notes + next-slide + timer) synced to the audience window.
 
 ## Phase 3
 
-**Scope**: <TODO(content)>
+**Scope**: Multiple master templates with per-deck selection (frontmatter `template:` key). Layout modes within a template: masonry/grid content slide, and a left-content / right-full-bleed-image split.
+
+**Definition of Done**:
+- [ ] A second template exists and a deck renders under either by changing one frontmatter key, with no content edits.
+- [ ] The two new layout modes are selectable per slide and documented in `docs/DESIGN.md`.
 
 ## Parking lot
 
 Phase 1 explicitly excludes: multiple templates and template switching; PDF or PPTX export; an in-app editor or WYSIWYG (decks are written in the author's own editor, the app only watches files); presenter view, speaker notes, or a timer; LaTeX; charts, graphs, or advanced datatables; micro-animations, micro-interactions, or interactive slides; a masonry/grid layout engine; presenter annotations and key-point callouts; authentication, multi-user, hosting, or sync; an asset-management UI.
+
+**Phase 4 (deferred, not scheduled)**: data visualization — line / doughnut / bar charts, graphs, advanced datatables; micro-animations and micro-interactions; interactive slides; presenter annotations and key-point callouts. Revisit only after Phase 1's success metric is met (8 real decks, zero fallbacks).
