@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+
+# env
+.env
+.env.local
+.env.*.local
+
+# build output
+.next/
+dist/
+.output/
+.vinxi/
+src/routeTree.gen.ts
+
+# claude session markers
+.claude/.claudemd-nudged
+.claude/.session-head
+.claude/screenshots/
+
+# scratch references (see docs/references/README.md)
+docs/references/*
+!docs/references/README.md
+
+# OS / editor
+.DS_Store
+Thumbs.db

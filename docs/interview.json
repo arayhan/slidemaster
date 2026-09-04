@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "createdAt": "2026-09-04T10:45:14.815Z",
+  "project": {
+    "name": "SlideMaster",
+    "platform": "web",
+    "framework": "tanstack-start",
+    "type": "product"
+  },
+  "answers": {
+    "problem": "I give a lot of presentations and I want to stop making design decisions for each one. I already write in Markdown and I live in git. I want to write only the content and the section structure of a talk, render it to HTML slides through one finalized template, and keep every talk in a local library organized by topic. Storage is local SQLite; the Markdown files live in the repo.",
+    "solution": "A local-first web app. You write each deck as a Markdown file with per-slide frontmatter; the app renders it to HTML slides with @marp-team/marp-core through a single opinionated master template. You browse decks by topic, live-preview while editing the .md in your own editor, and present fullscreen in the browser. A SQLite database indexes decks by title, topic and tags; the .md files remain the source of truth.",
+    "insight": "The renderer is a solved problem (Marp, Slidev), so this doesn't build one - it wraps Marp core. The only things owned here are one finalized template and a personal topic-indexed catalog. Because the author already writes talks in Markdown and git, the switching cost is near zero, and doing the template decisions once removes them from every future deck.",
+    "vision": "A personal, versioned library of every talk the author gives: content in Markdown, a section type per slide, present from the browser. Later, multiple templates and richer slide types (LaTeX, charts, layout modes) on the same pipeline.",
+    "targetUsers": "The author only - a person who presents frequently and already works in Markdown and git. Explicitly not multi-user; no accounts, no sharing, no hosting.",
+    "market": "Personal tool, no external market. The Marp theme and render pipeline could be open-sourced later, but that is not a goal.",
+    "competitors": "Marp and Slidev (Markdown-to-HTML slide decks, themeable, dev-oriented); reveal.js and remark; Pandoc + Beamer. The real competitor is the do-nothing option: Google Slides, Canva, PowerPoint plus the habit of using them.",
+    "differentiation": "Not a general-purpose slide tool. One opinionated, finalized template plus a topic-indexed personal library, built on Marp core so the rendering engine is not the author's to maintain. The value proposition is zero design decisions per deck, not a feature list.",
+    "businessModel": "None. Personal tool, not for sale.",
+    "successMetrics": "Within 6-12 months: at least 8 real presentations delivered from slidemaster decks; zero decks where the author fell back to Google Slides or Canva; the master template unchanged after the third deck.",
+    "roadmap": "Phase 1: TanStack Start app; Marp-core render pipeline (.md + per-slide frontmatter, --- slide splits); the single editorial master template as a Marp theme plus tokens.css; section-type slide shortcuts (title, profile, intermezzo, quote, references, contact, closing); images (jpg/png/gif), fenced code with syntax highlighting, text highlights, logo, react-icons picker; routes /decks (browse by topic), /edit/:id (live preview with file watch), /present/:id (fullscreen, keyboard navigation); SQLite via better-sqlite3 with a metadata index (decks: id, title, topic, path, created_at, updated_at; tags: deck_id, tag) that is rebuildable from the .md files. Phase 2: LaTeX via KaTeX, PDF export via Marp, presenter view with speaker notes and a timer. Phase 3: multiple templates with per-deck switching; layout modes (masonry/grid, left-content with right full-bleed image). Phase 4: data visualization (line/doughnut/bar charts, graphs, advanced datatables), micro-animations and micro-interactions, interactive slides, presenter annotations and key-point callouts.",
+    "riskiestAssumption": "That the author will keep writing decks in Markdown rather than falling back to Google Slides or Canva the first time a talk needs a custom chart, a tight image layout, or a diagram. Cheapest test: rebuild the most recent real presentation in Marp in about an hour, before building anything, and see where the constraints hurt.",
+    "nonGoals": "Phase 1 explicitly excludes: multiple templates and template switching; PDF or PPTX export; an in-app editor or WYSIWYG (decks are written in the author's own editor, the app only watches files); presenter view, speaker notes, or a timer; LaTeX; charts, graphs, or advanced datatables; micro-animations, micro-interactions, or interactive slides; a masonry/grid layout engine; presenter annotations and key-point callouts; authentication, multi-user, hosting, or sync; an asset-management UI.",
+    "designDirection": "Minimal and editorial. Generous whitespace, one strong typeface (a grotesk or serif headline), mostly black and white with a single accent color, no chrome and no gradients. Content first, high legibility, large type. Design tokens live in tokens.css; the impeccable skill refines the look later."
+  }
+}
