@@ -19,5 +19,9 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # Same four checks as /verify, in the same order. CI that runs fewer than
+      # the local loop is CI that passes things the local loop would have caught.
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
       - run: pnpm build
-      - run: pnpm run --if-present test
