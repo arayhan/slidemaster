@@ -69,8 +69,8 @@ an index" is not evidence.
 - **Naming**: `snake_case` tables and columns; plural table names (`decks`, `tags`).
   Timestamps are `TEXT` ISO-8601 UTC.
 - **Migrations**: plain `.sql` files in `db/migrations/`, numbered `NNN_name.sql`,
-  applied in order by `pnpm --silent db:migrate` (a script under `.claude/scripts/`
-  until the product needs its own). There is one environment — the user's machine —
+  applied in order by `pnpm db:migrate` (`scripts/db-migrate.mjs` — a migration
+  runner is tooling the product needs, so it lives in `scripts/`, not `.claude/`). There is one environment — the user's machine —
   so "manually run" means: run the script after pulling a change that adds a file.
 - **The index is derived.** `decks` and `tags` rows are a cache of what is in the
   `.md` files under `SLIDEMASTER_DECKS_DIR`. A `reconcile` routine (and a

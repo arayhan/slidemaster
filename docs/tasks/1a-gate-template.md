@@ -9,7 +9,12 @@ Human owner (the author — the only user of this tool).
 
 ## Unblocks
 
-Phase 1b — the Marp render pipeline, theme CSS, routes, and SQLite index.
+The Marp render pipeline and the theme CSS — the work that implements the look
+this gate signs off.
+
+**Not the data layer.** The SQLite index, reconcile, and the deck library are
+independent of how a slide looks, and gating them behind a design sign-off was
+over-broad. They proceeded in `0-step-03`.
 
 ## Questions
 
