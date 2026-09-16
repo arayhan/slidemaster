@@ -8,7 +8,7 @@
 **Next up:** 0-step-01-scaffold
 **Blocked on:** nothing
 **Last session:** 2026-09-16 — split Phase 1 into 1a (design) / 1b (build); dispatched ui-designer for art direction
-**Verify:** unknown (run /verify)
+**Verify:** pnpm lint clean, pnpm typecheck clean, pnpm test FAILS — no test files exist (the only one shipped with the deleted demo). 0-step-02 must write the first real test.
 
 ## In flight
 <!-- Max one. Empty is normal. -->
