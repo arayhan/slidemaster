@@ -57,12 +57,13 @@ The commands that prove the architecture still holds, and what each catches:
 | Command | Catches |
 |---|---|
 | `pnpm lint` | Import-zone violations — all rules, plus route-specific package leaks |
+| `pnpm typecheck` | Type errors across the whole program, config files included |
 | `pnpm test` | Domain and utility regressions |
 | `pnpm build` | `server-only` leaks into client components; per-route size ceilings |
 
 **Run them and quote the decisive line. A claim without output is not a
 verification.** `/verify` in `.claude/commands/` runs all
-three and reports what it saw.
+four and reports what it saw.
 
 ## The expensive bug
 
