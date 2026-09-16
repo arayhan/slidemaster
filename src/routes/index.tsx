@@ -1,4 +1,4 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -8,8 +8,11 @@ function Home() {
   return (
     <main>
       <h1>SlideMaster</h1>
-      <p>Scaffolded and ready. Run <code>/bootstrap-project</code> in Claude Code to fill in PRODUCT.md, PRD.md, and DESIGN.md.</p>
-      <p><Link to="/order">Order surfaces example</Link> · <Link to="/transaction">Transactions</Link></p>
+      <p>
+        Walking skeleton. The deck library, editor preview, and present mode
+        arrive in Phase 1b — see <code>docs/STATE.md</code> for where the
+        project is right now.
+      </p>
     </main>
   );
 }
