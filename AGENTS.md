@@ -39,7 +39,7 @@ Add rows for whatever else this project grows — a database doc, a design-proce
 
 ## Coding rules
 
-[`docs/rules/`](docs/rules/) holds the rules themselves, one file per concern (`principles`, `code-style`, `testing`, `git-workflow`, `sql-and-data`, `ui-styling`, `accessibility`), and is the only place they are stated. Read the ones your task touches. They are rules, not reasoning: when one looks arbitrary, `docs/architecture.md` says why. Never restate one here — a rule in two places is a rule with two versions.
+[`docs/rules/`](docs/rules/) holds the rules themselves, one file per concern (`principles`, `code-style`, `testing`, `git-workflow`, `sql-and-data`, `security`, `ui-styling`, `accessibility`), and is the only place they are stated. Read the ones your task touches. They are rules, not reasoning: when one looks arbitrary, `docs/architecture.md` says why. Never restate one here — a rule in two places is a rule with two versions.
 
 ## When to update this file
 
