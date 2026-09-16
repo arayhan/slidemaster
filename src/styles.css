@@ -1,3 +1,9 @@
+/* The chrome token layer. Must come before Tailwind's layers so a utility can
+ * still win, and it is imported HERE rather than in a component because
+ * __root.tsx links exactly one stylesheet and this is it. Slide tokens are NOT
+ * imported: src/theme/slide-tokens.css is handed to Marp, never to PostCSS. */
+@import "./styles/tokens.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
