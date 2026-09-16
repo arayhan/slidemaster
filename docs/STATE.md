@@ -19,6 +19,3 @@
 - 0-gate-deploy is unedited generator boilerplate. It asks for a "publicly reachable production URL" and "production secrets"; AGENTS.md says no hosting, no accounts, no multi-user. Rewrite or retire it before Phase 0 closes.
 - 1a-gate-template is unsigned. Two questions cannot be answered honestly yet: the mockup renders specimen content rather than a real past talk, and the specced Archivo woff2 is absent so it renders in the fallback stack.
 - Riskiest-assumption test: pour one real past presentation into the mockup's ten frames by hand (~1h). Same hour answers gate question 1.
-- docs/rules/security.md does not exist but is linked from AGENTS.md hard rule 1 and sql-and-data.md.
-- src/styles/tokens.css is imported by nothing — the --chrome-* tokens never load at runtime.
-- CI runs neither lint nor typecheck.
