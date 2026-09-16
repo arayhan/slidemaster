@@ -69,8 +69,9 @@ A `Stop` hook (`.claude/hooks/check-agentsmd.ps1`) nudges **once per session** w
 | Phase | Scope | Status |
 |---|---|---|
 | 0 | Walking skeleton + deploy | Build first |
-| 1 | Marp-core render pipeline; the one editorial template + `tokens.css`; section-type slides (title, profile, intermezzo, quote, references, contact, closing); images, fenced code, text highlights, logo, react-icons; routes `/decks`, `/edit/:id` (live preview + file watch), `/present/:id` (fullscreen, keyboard nav); SQLite metadata index, rebuildable from the `.md` files | Build now |
-| 2 | LaTeX (KaTeX); PDF export via Marp; presenter view — notes, dual-screen, timer | After 1 |
+| 1a | **Design.** Art direction for the one master template and the app chrome; slide anatomy for all seven section types; final `tokens.css` and the Marp theme spec. Ends at `1a-gate-template` — a human signs off on the look before any pipeline code | Design now |
+| 1b | **Build.** Marp-core render pipeline; the theme CSS implementing 1a; section-type slides (title, profile, intermezzo, quote, references, contact, closing); images, fenced code, text highlights, logo, react-icons; routes `/decks`, `/edit/:id` (live preview + file watch), `/present/:id` (fullscreen, keyboard nav); SQLite metadata index, rebuildable from the `.md` files | After 1a |
+| 2 | LaTeX (KaTeX); PDF export via Marp; presenter view — notes, dual-screen, timer | After 1b |
 | 3 | Multiple templates + per-deck switching; layout modes (masonry/grid, left-content / right full-bleed image) | After 2 |
 
 See [docs/PRD.md](docs/PRD.md) for the task breakdown per phase, and `docs/tasks/` for the work orders.
