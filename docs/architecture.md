@@ -6,11 +6,47 @@ Stack: TanStack Start, TypeScript, single repo.
 
 ## System shape
 
-<DIAGRAM> — the request path from browser to data store and back, one box per hop. Name the hosting target, the database, the object store, and anything third-party in the path. If a request can be served three ways (static, server-rendered, client-fetched), say which routes take which.
+No hosting target: this runs on the author's machine, `pnpm dev` or `node
+.output/server/index.mjs` on localhost. No object store, no third party in the
+path, no network call the app makes on its own.
+
+```
+    decks/*.md  ─────────────────────────┐   the source of truth, git-tracked
+         │                               │
+         │ reconcile()                   │ (Phase 1b: rendered by marp-core)
+         ▼                               ▼
+    db/slidemaster.sqlite           slide HTML
+    decks + tags                    in a sandboxed iframe
+    DERIVED, disposable
+         │
+         │ better-sqlite3, in-process, synchronous
+         ▼
+    src/server/db/  ──▶  server function  ──▶  route loader  ──▶  browser
+                         (handler stripped from the client bundle)
+```
+
+Every route is server-rendered. The browser never reads the filesystem or the
+database; it receives loader output. `SLIDEMASTER_DB_PATH` and
+`SLIDEMASTER_DECKS_DIR` are read only in `src/server/db/connection.ts`.
 
 ## Data flow
 
-<FLOW> — for each route, what fetches what, where it runs, and what the failure mode is. This section is where an agent looks before inventing a contract, so it must name real field names and real status codes, not shapes.
+| Route | Fetches | Where it runs | Failure mode |
+|---|---|---|---|
+| `/` | `getLibrary()` — reconciles, then `listDecks` | Server, in the route loader | A deck missing `title` or `topic` is skipped and listed under "Not indexed" with the key named. A missing decks directory renders the empty state. Any other filesystem error propagates |
+
+`getLibrary()` returns `{ decks: Deck[], skipped: SkippedDeck[] }`. `Deck` is
+`{ id, title, topic, path, tags, createdAt, updatedAt }` (`src/domain/deck.ts`);
+`SkippedDeck` is `{ path, reason }`. Timestamps are ISO-8601 UTC strings from the
+filesystem, never from frontmatter.
+
+No status codes: nothing here is an HTTP API. A server function that throws
+surfaces as a loader error, and the only deliberate throw is a non-ENOENT
+filesystem failure — a bad deck is data, not an exception.
+
+**Every list route reconciles before reading.** Reading rows that happen to be
+there shows decks that were renamed or deleted outside the app, with no error.
+Phase 1b replaces the per-load walk with a watcher.
 
 ## Folder structure
 
@@ -174,9 +210,11 @@ The split looks pedantic until you merge them. One folder for both has no admiss
 
 ### `server/` is a folder, not a convention
 
-Every file under `src/server/` opens with `import "server-only"`. Putting them all in one place makes the secrets boundary a **folder** boundary: one ESLint zone forbids importing it from client code, and a reviewer can check the whole surface by listing a directory.
+Every file under `src/server/db/` opens with `import "@tanstack/react-start/server-only"` — the marker TanStack Start's import-protection plugin recognises, which names the offending file and the import chain when a client module reaches it. The `server-only` npm package is not installed and is not the convention here.
 
-Scattered across feature folders, the same discipline is honour-system. `import "server-only"` still throws at build time if a client component pulls it in, but nothing tells you which files were *supposed* to have the marker and don't — and the one that silently lacks it is the one holding a connection string. The folder is what makes the absence visible.
+`src/server/decks.ts` deliberately carries no marker: it defines the server function the route imports, and the plugin strips its handler body from the client bundle. Marking it fails the build. The boundary is `db/`, not `server/` wholesale. Putting the data layer in one place makes the secrets boundary a **folder** boundary: one ESLint zone forbids importing it from client code, and a reviewer can check the whole surface by listing a directory.
+
+Scattered across feature folders, the same discipline is honour-system. The marker still fails the build if a client component pulls it in, but nothing tells you which files were *supposed* to have the marker and don't — and the one that silently lacks it is the one holding a connection string. The folder is what makes the absence visible.
 
 ### `domain` sits at the bottom
 
@@ -207,12 +245,14 @@ Set the ceilings from a measurement of your own framework baseline, taken once t
 
 | Concern | Choice | Version | Notes |
 |---|---|---|---|
-| Frontend framework | TanStack Start | ^1.87.0 | |
+| Frontend framework | TanStack Start | ^1.168.0 | |
 | Language | TypeScript | ^5.5.4 | |
-| Package manager | pnpm | ^9.0.0 | |
-| Styling | <X> | <X> | |
-| Data fetching | <X> | <X> | |
-| Validation | <X> | <X> | |
+| Package manager | pnpm | ^11.0.0 | 10+ gates dependency build scripts behind `allowBuilds` |
+| Styling | Tailwind | ^3.4.0 | App chrome only. The Marp theme is plain CSS outside this pipeline |
+| Data fetching | TanStack Start server functions | — | No client-side fetching library; route loaders call server functions directly |
+| Database | SQLite via better-sqlite3 | ^12.2.0 | Native addon. Listed in `pnpm-workspace.yaml` `allowBuilds`, or pnpm installs it without building it |
+| Frontmatter | gray-matter | ^4.0.3 | |
+| Validation | zod | ^3.23.0 | |
 | Tests | vitest | ^4.0.0 | Standalone `vitest.config.ts`, node environment. The app config is not reused — nitro and tanstackStart break under the test runner. Tests colocate as `*.test.ts` |
 
 Pin versions here. Anything outside this table needs approval and must clear whatever budget the project set.

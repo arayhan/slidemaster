@@ -97,8 +97,21 @@ describe("the mockup uses only tokens", () => {
 });
 
 describe("DESIGN.md specifies every section type", () => {
-  const design = read(DESIGN);
+  // Scoped to the section-anatomy chapter, not the whole file. DESIGN.md has
+  // other chapters with key tables and absent-field rules — deck-level
+  // frontmatter is one — and counting file-wide makes this fail whenever one is
+  // added, which says nothing about the seven section types.
+  const design = (() => {
+    const all = read(DESIGN);
+    const start = all.indexOf("## Section anatomy");
+    const end = all.indexOf("\n## ", start + 1);
+    return all.slice(start, end === -1 ? undefined : end);
+  })();
   const count = (pattern: RegExp) => (design.match(pattern) ?? []).length;
+
+  it("finds the section-anatomy chapter to scope to", () => {
+    expect(design).toContain("## Section anatomy");
+  });
 
   // Seven section types: title, profile, intermezzo, quote, references,
   // contact, closing. A type specified without an absent-field list is the gap

@@ -112,7 +112,9 @@ pnpm test   # Tests  8 passed (8)
   forbids. Only the Tests row was this step's to answer.
 - `.claude/hooks/check-agentsmd.ps1` does not watch `docs/rules/*` or
   `docs/tasks/*`, though both can invalidate `AGENTS.md`.
-- `src/routeTree.gen.ts` is `@ts-nocheck`ed and contains stray brace blocks.
-  Regenerate with `pnpm generate-routes` when routes are next added.
+- ~~`src/routeTree.gen.ts` contains stray brace blocks.~~ **Wrong.** Braces
+  balance; the unused `createStart` type import is deliberate output from the
+  route-tree footer generator when no `startFilePath` is configured. Corrected in
+  0-step-03.
 
 **Depends:** 0-step-01-scaffold · **Blocks:** 0-step-03-data-round-trip, 0-gate-deploy · **handoff:** software-engineer

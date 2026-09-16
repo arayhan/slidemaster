@@ -1,6 +1,12 @@
 # dependencies
 node_modules/
 
+# derived SQLite index - rebuildable from the deck .md files, never committed
+db/*.sqlite
+db/*.sqlite-journal
+db/*.sqlite-wal
+db/*.sqlite-shm
+
 # env
 .env
 .env.local

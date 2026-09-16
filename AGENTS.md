@@ -95,7 +95,7 @@ slidemaster/
     ├── routes/         # routes, layouts, composition
     ├── modules/     # named after SURFACES, never import each other; index.ts is each one's public API
     ├── domain/      # business rules — bottom of the import graph, dependency-light
-    ├── server/      # every file opens with import "server-only"
+    ├── server/      # data layer opens with import "@tanstack/react-start/server-only"
     ├── services/    # outbound API clients
     ├── components/  # cross-module UI primitives only
     ├── hooks/       # cross-module React hooks, use-<thing>.ts — same one-consumer rule

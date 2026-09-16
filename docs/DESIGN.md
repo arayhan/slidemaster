@@ -346,6 +346,46 @@ Four colours plus plain ink. **Anything a highlighter would give a fifth colour 
 
 ---
 
+## Deck-level frontmatter
+
+The block at the top of a deck `.md`, before the first `---` slide split. It
+describes the **deck**; the `section:` key described below describes a **slide**.
+
+These keys are the only thing the library knows about a deck. `docs/PRODUCT.md`:
+"Deck metadata shown in the library comes from the `.md` frontmatter and the
+filesystem. The app does not guess a topic or backfill a date."
+
+| Key | Required | Indexed as |
+|---|---|---|
+| `title` | yes | `decks.title` |
+| `topic` | yes | `decks.topic` — the library's grouping key |
+| `id` | no | `decks.id`; absent → derived from the filename slug |
+| `tags` | no | one `tags.tag` row each |
+| `speaker` | no | not indexed; the `profile.name` fallback (open question 3) |
+| `logo` | no | not indexed; path to the mark, see *Logo* below |
+
+`created_at` and `updated_at` come from the filesystem, not from frontmatter.
+There is no `date:` key, because a date an author has to remember to update is a
+date that is wrong.
+
+**Absent-field behaviour**
+
+- `id` absent → derived from the filename, so `decks/why-ssr.md` is `why-ssr`.
+  Renaming the file therefore changes the id and the deck reads as a new one. An
+  author who intends to rename freely writes an explicit `id`.
+- `tags`, `speaker`, `logo` absent → the deck indexes without them. No inferred
+  tag, no inferred speaker, no default mark.
+- **`title` or `topic` absent → the deck does not index at all.** The file is
+  skipped, reconcile continues over every other deck, and the library says which
+  file was skipped and which key it is missing.
+
+That last rule is the one worth arguing about, so: the alternative is guessing.
+Falling back to the filename for `title` or the parent folder for `topic` is
+exactly the fabrication `docs/PRODUCT.md` forbids, and it fails silently — the
+deck appears, looks fine, and carries a topic nobody chose. Failing the whole
+reconcile instead would let one typo hide thirty good decks. Skipping loudly is
+the only option that neither invents nor hides.
+
 ## Section anatomy — all seven types
 
 The per-slide key is `section:`. Absent → the default content slide.
