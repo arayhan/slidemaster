@@ -213,7 +213,7 @@ Set the ceilings from a measurement of your own framework baseline, taken once t
 | Styling | <X> | <X> | |
 | Data fetching | <X> | <X> | |
 | Validation | <X> | <X> | |
-| Tests | <X> | <X> | |
+| Tests | vitest | ^4.0.0 | Standalone `vitest.config.ts`, node environment. The app config is not reused — nitro and tanstackStart break under the test runner. Tests colocate as `*.test.ts` |
 
 Pin versions here. Anything outside this table needs approval and must clear whatever budget the project set.
 
