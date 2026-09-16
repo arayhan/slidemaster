@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SlideMaster — master template mockup (SPECIMEN)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- TODO(content): every word of visible text in this file is SPECIMEN placeholder
+     talk content, written only to exercise the template. This file is app-adjacent
+     reference material for the 1a-gate-template review. It is NEVER shipped as deck
+     content, never copied into a real deck, and never used as a default value.
+     See docs/DESIGN.md, section "The mockup". -->
+
+<!-- Self-contained. No build step, no JavaScript, no external network request.
+     Open directly in a browser at 100% zoom: each frame is exactly 1280x720,
+     so 100% zoom is true size. -->
+
+<style>
+/* TOKENS:START
+   Everything between these markers is the ONLY place a raw px or hex value may
+   appear in this file. The --slide-* block below is a verbatim copy of
+   src/theme/slide-tokens.css; docs/tasks/1a-step-02-template-spec.md carries the
+   command that proves the two are identical. */
+:root {
+  --slide-space-1: 8px;
+  --slide-space-2: 16px;
+  --slide-space-3: 24px;
+  --slide-space-4: 40px;
+  --slide-space-5: 64px;
+  --slide-space-6: 96px;
+  --slide-space-7: 128px;
+
+  --slide-canvas-w: 1280px;
+  --slide-canvas-h: 720px;
+  --slide-safe-x: 64px;
+  --slide-safe-y: 36px;
+  --slide-margin-x: var(--slide-space-6);
+  --slide-margin-y: var(--slide-space-5);
+  --slide-col: 115px;
+  --slide-gutter: var(--slide-space-3);
+  --slide-content-w: calc(var(--slide-canvas-w) - 2 * var(--slide-margin-x));
+  --slide-content-h: calc(var(--slide-canvas-h) - 2 * var(--slide-margin-y));
+  --slide-foot-h: var(--slide-space-5);
+  --slide-body-h: calc(var(--slide-content-h) - var(--slide-foot-h) - var(--slide-space-3));
+  --slide-span-3: calc(3 * var(--slide-col) + 2 * var(--slide-gutter));
+  --slide-span-4: calc(4 * var(--slide-col) + 3 * var(--slide-gutter));
+  --slide-span-5: calc(5 * var(--slide-col) + 4 * var(--slide-gutter));
+  --slide-span-6: calc(6 * var(--slide-col) + 5 * var(--slide-gutter));
+
+  --slide-ground-paper: #F4F4F2;
+  --slide-ground-field: #1B4DFF;
+  --slide-ground-ink: #14161A;
+
+  --slide-on-paper: #14161A;
+  --slide-on-paper-muted: #52565E;
+  --slide-on-paper-accent: #1B4DFF;
+
+  --slide-on-field: #FFFFFF;
+  --slide-on-field-muted: #DCE3F8;
+
+  --slide-on-ink: #FFFFFF;
+  --slide-on-ink-muted: #9AA0AC;
+  --slide-on-ink-accent: #8FA9FF;
+
+  --slide-surface: #E9E9E5;
+
+  --slide-code-plain: var(--slide-on-paper);
+  --slide-code-keyword: var(--slide-on-paper-accent);
+  --slide-code-string: #1F6B3A;
+  --slide-code-literal: #A3200F;
+  --slide-code-comment: var(--slide-on-paper-muted);
+
+  --slide-font-display: "Archivo", "Helvetica Neue", Helvetica, "Liberation Sans", Arial, sans-serif;
+  --slide-font-quote: Charter, "Bitstream Charter", "Charis SIL", Georgia, serif;
+  --slide-font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --slide-text-display: 128px;
+  --slide-text-xl: 86px;
+  --slide-text-lg: 58px;
+  --slide-text-md: 44px;
+  --slide-text-sm: 32px;
+  --slide-text-xs: 24px;
+
+  --slide-leading-display: 0.92;
+  --slide-leading-xl: 1.02;
+  --slide-leading-lg: 1.08;
+  --slide-leading-body: 1.35;
+  --slide-leading-sm: 1.4;
+
+  --slide-track-display: -0.03em;
+  --slide-track-lg: -0.015em;
+  --slide-track-body: 0em;
+  --slide-track-xs: 0.06em;
+
+  --slide-weight-display: 700;
+  --slide-weight-heading: 600;
+  --slide-weight-body: 400;
+  --slide-weight-strong: 700;
+
+  --slide-measure-display: 14ch;
+  --slide-measure-body: 46ch;
+  --slide-measure-quote: 22ch;
+
+  --slide-rule-hair: 1px;
+  --slide-rule-thick: 4px;
+  --slide-marker: 10px;
+  --slide-icon: 48px;
+  --slide-logo-h: 32px;
+  --slide-underline-offset: 8px;
+  --slide-qr: 240px;
+  --slide-radius: 0;
+  --slide-shadow: none;
+
+  /* --doc-* is this contact sheet's own furniture. It is NOT part of the design
+     system and never reaches the Marp theme. It exists so the frames below can be
+     labelled and measured. */
+  --doc-bg: #2A2C30;
+  --doc-panel: #35383D;
+  --doc-fg: #F4F4F2;
+  --doc-muted: #9AA0AC;
+  --doc-accent: #8FA9FF;
+  --doc-warn: #FFD166;
+  --doc-rule: 1px;
+  --doc-label-size: 14px;
+  --doc-note-size: 13px;
+  --doc-grid-tint: rgba(27, 77, 255, 0.10);
+  --doc-safe-tint: rgba(255, 209, 102, 0.85);
+}
+/* TOKENS:END */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { background: var(--doc-bg); }
+
+body {
+  margin: 0;
+  padding: var(--slide-space-4);
+  background: var(--doc-bg);
+  color: var(--doc-fg);
+  font-family: var(--slide-font-display);
+  font-size: var(--doc-note-size);
+  line-height: var(--slide-leading-body);
+}
+
+/* ---- Contact-sheet chrome (not part of the design system) ---------------- */
+
+.doc-head {
+  max-width: var(--slide-canvas-w);
+  margin: 0 auto var(--slide-space-3);
+  padding: var(--slide-space-3);
+  background: var(--doc-panel);
+  border-top: var(--slide-rule-thick) solid var(--doc-warn);
+}
+.doc-head h1 {
+  margin: 0 0 var(--slide-space-1);
+  font-size: var(--doc-label-size);
+  letter-spacing: var(--slide-track-xs);
+  text-transform: uppercase;
+  color: var(--doc-warn);
+}
+.doc-head p { margin: 0 0 var(--slide-space-1); max-width: 96ch; }
+.doc-head p:last-child { margin-bottom: 0; }
+
+.doc-head code, .frame-label code {
+  background: none;
+  padding: 0;
+  font-family: var(--slide-font-mono);
+  font-size: 1em;
+  color: var(--doc-accent);
+}
+
+.doc-opts {
+  max-width: var(--slide-canvas-w);
+  margin: 0 auto var(--slide-space-4);
+  display: flex;
+  gap: var(--slide-space-2);
+  align-items: center;
+}
+.doc-opts label {
+  cursor: pointer;
+  user-select: none;
+  padding: var(--slide-space-1) var(--slide-space-2);
+  border: var(--doc-rule) solid var(--doc-muted);
+  color: var(--doc-muted);
+}
+#opt-labels:checked ~ .doc-opts label[for="opt-labels"],
+#opt-grid:checked ~ .doc-opts label[for="opt-grid"] {
+  background: var(--slide-ground-field);
+  border-color: var(--slide-ground-field);
+  color: var(--slide-on-field);
+}
+
+.sheet { max-width: var(--slide-canvas-w); margin: 0 auto; }
+
+.frame { margin: 0 0 var(--slide-space-5); }
+
+.frame-label {
+  margin-bottom: var(--slide-space-1);
+  font-size: var(--doc-label-size);
+  color: var(--doc-muted);
+}
+.frame-label b { color: var(--doc-fg); font-weight: var(--slide-weight-heading); }
+.frame-label .tag { color: var(--doc-accent); }
+
+#opt-labels:checked ~ .sheet .frame-label { display: none; }
+
+/* ---- The slide canvas ---------------------------------------------------- */
+
+.slide {
+  position: relative;
+  width: var(--slide-canvas-w);
+  height: var(--slide-canvas-h);
+  overflow: hidden;
+  font-family: var(--slide-font-display);
+  font-weight: var(--slide-weight-body);
+  letter-spacing: var(--slide-track-body);
+  border-radius: var(--slide-radius);
+  box-shadow: var(--slide-shadow);
+}
+
+.g-paper { background: var(--slide-ground-paper); color: var(--slide-on-paper); }
+.g-field { background: var(--slide-ground-field); color: var(--slide-on-field); }
+.g-ink   { background: var(--slide-ground-ink);   color: var(--slide-on-ink); }
+
+.content {
+  position: absolute;
+  left: var(--slide-margin-x);
+  top: var(--slide-margin-y);
+  width: var(--slide-content-w);
+  height: var(--slide-content-h);
+  display: flex;
+  flex-direction: column;
+}
+
+.body { height: var(--slide-body-h); display: flex; flex-direction: column; }
+.body--end    { justify-content: flex-end; }
+.body--center { justify-content: center; }
+
+.foot {
+  height: var(--slide-foot-h);
+  margin-top: var(--slide-space-3);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  font-size: var(--slide-text-xs);
+  line-height: var(--slide-leading-sm);
+  font-variant-numeric: tabular-nums;
+}
+.g-paper .foot { color: var(--slide-on-paper-muted); }
+.g-field .foot { color: var(--slide-on-field-muted); }
+.g-ink   .foot { color: var(--slide-on-ink-muted); }
+
+.foot--stack { flex-direction: column; align-items: stretch; gap: var(--slide-space-2); }
+.foot--stack .foot-row { display: flex; justify-content: space-between; align-items: baseline; }
+
+.logo {
+  height: var(--slide-logo-h);
+  display: flex;
+  align-items: center;
+  gap: var(--slide-space-1);
+  font-family: var(--slide-font-mono);
+}
+.logo svg { height: var(--slide-logo-h); width: var(--slide-logo-h); }
+
+/* ---- Display type -------------------------------------------------------- */
+
+.display {
+  margin: 0;
+  font-size: var(--slide-text-display);
+  line-height: var(--slide-leading-display);
+  letter-spacing: var(--slide-track-display);
+  font-weight: var(--slide-weight-display);
+  max-width: var(--slide-measure-display);
+  text-wrap: balance;
+  hyphens: none;
+}
+.display[data-len="long"] {
+  font-size: var(--slide-text-xl);
+  line-height: var(--slide-leading-xl);
+}
+
+.meta {
+  margin: 0 0 var(--slide-space-4);
+  padding: 0;
+  list-style: none;
+  font-size: var(--slide-text-sm);
+  line-height: var(--slide-leading-sm);
+}
+.g-field .meta { color: var(--slide-on-field-muted); }
+.meta li + li { margin-top: var(--slide-space-1); }
+
+/* ---- Content slide ------------------------------------------------------- */
+
+.heading {
+  margin: 0;
+  font-size: var(--slide-text-lg);
+  line-height: var(--slide-leading-lg);
+  letter-spacing: var(--slide-track-lg);
+  font-weight: var(--slide-weight-heading);
+  max-width: var(--slide-span-6);
+}
+.heading-rule {
+  width: var(--slide-col);
+  height: var(--slide-rule-thick);
+  background: var(--slide-on-paper-accent);
+  margin-top: var(--slide-space-3);
+  flex: none;
+}
+
+.bullets {
+  margin: var(--slide-space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--slide-text-md);
+  line-height: var(--slide-leading-body);
+  max-width: var(--slide-measure-body);
+}
+.bullets > li { position: relative; padding-left: var(--slide-space-4); }
+.bullets > li + li { margin-top: var(--slide-space-2); }
+.bullets > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(0.5 * var(--slide-text-md) * var(--slide-leading-body) - 0.5 * var(--slide-marker));
+  width: var(--slide-marker);
+  height: var(--slide-marker);
+  background: var(--slide-on-paper);
+}
+.bullets ul {
+  margin: var(--slide-space-2) 0 0;
+  padding: 0 0 0 var(--slide-space-4);
+  list-style: none;
+}
+.bullets ul > li { position: relative; padding-left: var(--slide-space-4); }
+.bullets ul > li + li { margin-top: var(--slide-space-2); }
+.bullets ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(0.5 * var(--slide-text-md) * var(--slide-leading-body) - 0.5 * var(--slide-rule-thick));
+  width: var(--slide-space-3);
+  height: var(--slide-rule-thick);
+  background: var(--slide-on-paper-muted);
+}
+
+strong { font-weight: var(--slide-weight-strong); }
+
+mark {
+  background: none;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--slide-on-paper-accent);
+  text-decoration-thickness: var(--slide-rule-thick);
+  text-underline-offset: var(--slide-underline-offset);
+  text-decoration-skip-ink: none;
+}
+
+.slide code {
+  font-family: var(--slide-font-mono);
+  font-size: 0.9em;
+  background: var(--slide-surface);
+  border-radius: var(--slide-radius);
+  padding: 0 0.2em;
+}
+
+/* ---- Code slide ---------------------------------------------------------- */
+
+.codepanel {
+  margin-top: var(--slide-space-4);
+  padding: var(--slide-space-3);
+  background: var(--slide-surface);
+  border-radius: var(--slide-radius);
+}
+.codepanel pre {
+  margin: 0;
+  font-family: var(--slide-font-mono);
+  font-size: var(--slide-text-sm);
+  line-height: var(--slide-leading-sm);
+  color: var(--slide-code-plain);
+  white-space: pre;
+  overflow: hidden;
+}
+.codepanel code { background: none; padding: 0; font-size: inherit; }
+.t-key { color: var(--slide-code-keyword); }
+.t-str { color: var(--slide-code-string); }
+.t-lit { color: var(--slide-code-literal); }
+.t-com { color: var(--slide-code-comment); }
+.t-fn  { color: var(--slide-code-plain); font-weight: var(--slide-weight-strong); }
+
+/* ---- Split layouts ------------------------------------------------------- */
+
+.split { display: flex; gap: var(--slide-gutter); height: 100%; }
+.col-3 { width: var(--slide-span-3); flex: none; }
+.col-4 { width: var(--slide-span-4); flex: none; }
+.col-5 { width: var(--slide-span-5); flex: none; }
+
+.plane {
+  background: var(--slide-ground-field);
+  height: 100%;
+  position: relative;
+  border-radius: var(--slide-radius);
+  overflow: hidden;
+}
+.plane-note {
+  position: absolute;
+  left: var(--slide-space-3);
+  right: var(--slide-space-3);
+  bottom: var(--slide-space-3);
+  margin: 0;
+  font-family: var(--slide-font-mono);
+  font-size: var(--slide-text-xs);
+  line-height: var(--slide-leading-sm);
+  color: var(--slide-on-field-muted);
+}
+
+/* ---- Profile ------------------------------------------------------------- */
+
+.p-name {
+  margin: 0;
+  font-size: var(--slide-text-lg);
+  line-height: var(--slide-leading-lg);
+  letter-spacing: var(--slide-track-lg);
+  font-weight: var(--slide-weight-heading);
+}
+.p-role {
+  margin: var(--slide-space-2) 0 0;
+  font-size: var(--slide-text-md);
+  line-height: var(--slide-leading-body);
+  color: var(--slide-on-paper-muted);
+}
+.p-bio {
+  margin: var(--slide-space-3) 0 0;
+  font-size: var(--slide-text-md);
+  line-height: var(--slide-leading-body);
+  max-width: var(--slide-measure-body);
+}
+.p-rule {
+  width: var(--slide-col);
+  height: var(--slide-rule-thick);
+  background: var(--slide-on-paper-accent);
+  margin: var(--slide-space-4) 0 var(--slide-space-3);
+}
+.p-links {
+  margin: 0; padding: 0; list-style: none;
+  font-family: var(--slide-font-mono);
+  font-size: var(--slide-text-sm);
+  line-height: var(--slide-leading-sm);
+  color: var(--slide-on-paper-accent);
+}
+.p-links li + li { margin-top: var(--slide-space-1); }
+
+/* ---- Quote --------------------------------------------------------------- */
+
+.quote {
+  margin: 0;
+  font-family: var(--slide-font-quote);
+  font-size: var(--slide-text-xl);
+  line-height: var(--slide-leading-xl);
+  max-width: var(--slide-measure-quote);
+  hanging-punctuation: first;
+}
+@supports not (hanging-punctuation: first) {
+  .quote { text-indent: -0.42em; }
+}
+.quote-attr {
+  margin: var(--slide-space-4) 0 0;
+  font-size: var(--slide-text-sm);
+  line-height: var(--slide-leading-sm);
+  color: var(--slide-on-ink-accent);
+}
+.quote-src {
+  margin: var(--slide-space-1) 0 0;
+  font-size: var(--slide-text-sm);
+  line-height: var(--slide-leading-sm);
+  color: var(--slide-on-ink-muted);
+}
+
+/* ---- References ---------------------------------------------------------- */
+
+.refs {
+  margin: var(--slide-space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  columns: 2;
+  column-gap: var(--slide-gutter);
+  font-family: var(--slide-font-quote);
+  font-size: var(--slide-text-sm);
+  line-height: var(--slide-leading-sm);
+}
+.refs li {
+  position: relative;
+  padding-left: var(--slide-space-4);
+  margin-bottom: var(--slide-space-2);
+  break-inside: avoid;
+}
+.refs .n {
+  position: absolute;
+  left: 0;
+  width: var(--slide-space-3);
+  text-align: right;
+  font-family: var(--slide-font-display);
+  font-weight: var(--slide-weight-heading);
+  color: var(--slide-on-paper-accent);
+  font-variant-numeric: tabular-nums;
+}
+.refs .u {
+  display: block;
+  font-family: var(--slide-font-mono);
+  font-size: var(--slide-text-xs);
+  color: var(--slide-on-paper-accent);
+  word-break: break-all;
+}
+
+/* ---- Contact ------------------------------------------------------------- */
+
+.contacts { margin: var(--slide-space-4) 0 0; padding: 0; list-style: none; }
+.contacts li {
+  display: grid;
+  grid-template-columns: var(--slide-icon) 1fr;
+  gap: var(--slide-space-3);
+  align-items: start;
+}
+.contacts li + li { margin-top: var(--slide-space-3); }
+.contacts svg { width: var(--slide-icon); height: var(--slide-icon); color: var(--slide-on-paper-accent); }
+.c-label { display: block; font-size: var(--slide-text-sm); line-height: var(--slide-leading-sm); color: var(--slide-on-paper-muted); }
+.c-value { display: block; font-family: var(--slide-font-mono); font-size: var(--slide-text-md); line-height: var(--slide-leading-body); }
+
+/* ---- Intermezzo progress rule -------------------------------------------- */
+
+.progress { display: flex; gap: var(--slide-space-1); }
+.progress span { flex: 1; height: var(--slide-rule-thick); background: var(--slide-ground-ink); }
+.progress span.on { background: var(--slide-on-field); }
+
+/* ---- Image slide --------------------------------------------------------- */
+
+.figure { display: flex; flex-direction: column; height: 100%; margin: 0; }
+.figure .plane { flex: 1; height: auto; }
+.figcap {
+  margin: var(--slide-space-2) 0 0;
+  font-size: var(--slide-text-xs);
+  line-height: var(--slide-leading-sm);
+  color: var(--slide-on-paper-muted);
+}
+
+/* ---- Review overlays (aids for the gate, never part of the template) ----- */
+
+.guides { position: absolute; inset: 0; pointer-events: none; display: none; }
+#opt-grid:checked ~ .sheet .guides { display: block; }
+.guides .cols {
+  position: absolute;
+  left: var(--slide-margin-x);
+  top: 0;
+  bottom: 0;
+  width: var(--slide-content-w);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--doc-grid-tint) 0 var(--slide-col),
+    transparent var(--slide-col) calc(var(--slide-col) + var(--slide-gutter))
+  );
+}
+.guides .safe {
+  position: absolute;
+  left: var(--slide-safe-x);
+  right: var(--slide-safe-x);
+  top: var(--slide-safe-y);
+  bottom: var(--slide-safe-y);
+  border: var(--doc-rule) dashed var(--doc-safe-tint);
+}
+.guides .baseline {
+  position: absolute;
+  left: var(--slide-margin-x);
+  width: var(--slide-content-w);
+  top: calc(var(--slide-margin-y) + var(--slide-body-h));
+  border-top: var(--doc-rule) dashed var(--doc-safe-tint);
+}
+
+@media print {
+  html, body { background: none; }
+  .doc-opts, .frame-label { display: none; }
+}
+</style>
+</head>
+
+<body>
+
+<input type="checkbox" id="opt-labels" hidden>
+<input type="checkbox" id="opt-grid" hidden>
+
+<div class="doc-head">
+  <h1>Specimen — not deck content</h1>
+  <p>Every word below is placeholder talk content, written only to exercise the template. It never ships as deck content and is never copied into a real deck. The template renders only what a deck's frontmatter supplies — see <code>docs/PRODUCT.md</code>.</p>
+  <p>Ten frames at exactly 1280 by 720: the seven section types, plus a default content slide, a code slide and an image slide. View at 100% browser zoom for true size.</p>
+  <p><strong>Two things to know before judging the type.</strong> It renders in the <em>fallback</em> stack — the Archivo file is not in the repo yet (open question 1 in <code>docs/DESIGN.md</code>). And this deck is specimen content, so <code>docs/tasks/1a-gate-template.md</code> question 1, "does it render a real past presentation", is still unanswered.</p>
+</div>
+
+<div class="doc-opts">
+  <label for="opt-labels">Hide annotations</label>
+  <label for="opt-grid">Show grid and safe area</label>
+</div>
+
+<div class="sheet">
+
+<!-- 1 - TITLE -->
+<figure class="frame">
+  <figcaption class="frame-label"><b>1 · title</b> <span class="tag">cobalt field</span> — 39-character title, so the pipeline sets <code>data-len="long"</code> and it renders one step down from display. All meta present. No slide number and no logo on a field slide.</figcaption>
+  <div class="slide g-field">
+    <div class="content">
+      <div class="body body--end">
+        <ul class="meta">
+          <li>Rae Nandika</li>
+          <li>Nusantara Systems Meetup</li>
+          <li>14 October 2026</li>
+        </ul>
+        <h1 class="display" data-len="long">Reading the Index Before It Lies to You</h1>
+      </div>
+      <div class="foot"></div>
+    </div>
+    <div class="guides"><div class="cols"></div><div class="safe"></div><div class="baseline"></div></div>
+  </div>
+</figure>
+
+<!-- 2 - PROFILE -->
+<figure class="frame">
+  <figcaption class="frame-label"><b>2 · profile</b> <span class="tag">paper · 3+5</span> — <code>photo</code> absent. The cobalt plane is the design; a supplied photo fills it. No avatar, no initials, no silhouette.</figcaption>
+  <div class="slide g-paper">
+    <div class="content">
+      <div class="body">
+        <div class="split">
+          <div class="col-3">
+            <div class="plane"><p class="plane-note">photo: absent</p></div>
+          </div>
+          <div class="col-5">
+            <p class="p-name">Rae Nandika</p>
+            <p class="p-role">Platform engineer · Halcyon Data</p>
+            <p class="p-bio">Ten years of keeping derived state honest. Mostly by deleting it.</p>
+            <div class="p-rule"></div>
+            <ul class="p-links">
+              <li>rae@example.invalid</li>
+              <li>rae.example.invalid</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="foot">
+        <span class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><path d="M3 9h18"/></svg>
+          halcyon
+        </span>
+        <span>4</span>
+      </div>
+    </div>
+    <div class="guides"><div class="cols"></div><div class="safe"></div><div class="baseline"></div></div>
+  </div>
+</figure>
+
+<!-- 3 - INTERMEZZO -->
+<figure class="frame">
+  <figcaption class="frame-label"><b>3 · intermezzo</b> <span class="tag">cobalt field</span> — progress rule: 4 sections in the deck, 2 reached. No kicker and no <code>label</code> key; the heading is the only content.</figcaption>
+  <div class="slide g-field">
+    <div class="content">
+      <div class="body body--center">
+        <h2 class="display" data-len="long">How the index goes stale</h2>
+      </div>
+      <div class="foot foot--stack">
+        <div class="progress"><span class="on"></span><span class="on"></span><span></span><span></span></div>
+        <div class="foot-row"><span></span><span>9</span></div>
+      </div>
+    </div>
+    <div class="guides"><div class="cols"></div><div class="safe"></div><div class="baseline"></div></div>
+  </div>
+</figure>
+
+<!-- 4 - QUOTE -->
+<figure class="frame">
+  <figcaption class="frame-label"><b>4 · quote</b> <span class="tag">ink field · Charter</span> — the one slide carrying a voice that is not the speaker's, and the only place the serif appears outside references. The opening mark hangs into the margin.</figcaption>
+  <div class="slide g-ink">
+    <div class="content">
+      <div class="body body--center">
+        <blockquote class="quote">“A cache is a bet that the world will hold still.”</blockquote>
+        <p class="quote-attr">Marguerite Okonjo</p>
+        <p class="quote-src">Notes on Durable Systems, 2019</p>
+      </div>
+      <div class="foot"><span></span><span>12</span></div>
+    </div>
+    <div class="guides"><div class="cols"></div><div class="safe"></div><div class="baseline"></div></div>
+  </div>
+</figure>
+
+<!-- 5 - REFERENCES -->
+<figure class="frame">
+  <figcaption class="frame-label"><b>5 · references</b> <span class="tag">paper · 4+4 · Charter</span> — six entries, the stated capacity under a heading. The one slide allowed below the body floor, because it exists to be photographed. Entry 6 has no <code>url</code>.</figcaption>
+  <div class="slide g-paper">
+    <div class="content">
+      <div class="body">
+        <h2 class="heading">Sources</h2>
+        <div class="heading-rule"></div>
+        <ol class="refs">
+          <li><span class="n">1</span>Okonjo, M. <em>Notes on Durable Systems.</em> Cormorant Press, 2019.<span class="u">example.invalid/durable</span></li>
+          <li><span class="n">2</span>Vasquez, D. “Reconciliation loops that terminate.” <em>Journal of Boring Infrastructure</em> 11 (2).<span class="u">example.invalid/loops</span></li>
+          <li><span class="n">3</span>Håkansson, L. <em>Derived State Considered Temporary.</em> Talk, 2024.<span class="u">example.invalid/derived</span></li>
+          <li><span class="n">4</span>Adeyemi, F. “Rebuild is the only test.” Blog post, March 2025.<span class="u">example.invalid/rebuild</span></li>
+          <li><span class="n">5</span>Brandt, I. <em>The Filesystem Is the Database.</em> Kestrel, 2022.<span class="u">example.invalid/fsdb</span></li>
+          <li><span class="n">6</span>Internal postmortem, conference deck incident, 2026.</li>
+        </ol>
+      </div>
+      <div class="foot">
+        <span class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><path d="M3 9h18"/></svg>
+          halcyon
+        </span>
+        <span>27</span>
+      </div>
+    </div>
+    <div class="guides"><div class="cols"></div><div class="safe"></div><div class="baseline"></div></div>
+  </div>
+</figure>
+
+<!-- 6 - CONTACT -->
+<figure class="frame">
+  <figcaption class="frame-label"><b>6 · contact</b> <span class="tag">paper · 5+3</span> — row 3 has no <code>icon</code>, and the icon column keeps its width so the rows stay aligned. <code>qr</code> absent: columns 6 to 8 stay empty and nothing recentres.</figcaption>
+  <div class="slide g-paper">
+    <div class="content">
+      <div class="body">
+        <div class="split">
+          <div class="col-5">
+            <h2 class="heading">Find me</h2>
+            <div class="heading-rule"></div>
+            <ul class="contacts">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <span><span class="c-label">Email</span><span class="c-value">rae@example.invalid</span></span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                <span><span class="c-label">Site</span><span class="c-value">rae.example.invalid</span></span>
+              </li>
+              <li>
+                <span></span>
+                <span><span class="c-label">Slides for this talk</span><span class="c-value">rae.example.invalid/idx</span></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="foot">
+        <span class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><path d="M3 9h18"/></svg>
+          halcyon
+        </span>
+        <span>28</span>
+      </div>
+    </div>
+    <div class="guides"><div class="cols"></div><div class="safe"></div><div class="baseline"></div></div>
+  </div>
+</figure>
+
+<!-- 7 - CLOSING -->
+<figure class="frame">
+  <figcaption class="frame-label"><b>7 · closing</b> <span class="tag">cobalt field</span> — 26 characters, so it renders at the full display step. Same anchor as the title slide, so the deck's first and last frame rhyme. <code>message</code> is authored; the template never writes “Thank you”.</figcaption>
+  <div class="slide g-field">
+    <div class="content">
+      <div class="body body--end">
+        <ul class="meta"><li>Rae Nandika</li></ul>
+        <p class="display">Questions, then arguments.</p>
+      </div>
+      <div class="foot"><span></span><span>29</span></div>
+    </div>
+    <div class="guides"><div class="cols"></div><div class="safe"></div><div class="baseline"></div></div>
+  </div>
+</figure>
+
+<!-- 8 - DEFAULT CONTENT -->
+<figure class="frame">
+  <figcaption class="frame-label"><b>8 · default content</b> <span class="tag">paper</span> — heading, the cobalt signature rule, and five bullets at the capacity limit. Shows bold, the <code>==highlight==</code> underline, inline code, and one level of nesting.</figcaption>
+  <div class="slide g-paper">
+    <div class="content">
+      <div class="body">
+        <h2 class="heading">Three ways a derived index drifts</h2>
+        <div class="heading-rule"></div>
+        <ul class="bullets">
+          <li>A file is renamed on disk while nothing is watching.</li>
+          <li>A reconcile writes rows but <strong>never deletes</strong> them.</li>
+          <li>Two writers disagree about <code>updated_at</code>.
+            <ul><li>The later write wins, and it is wrong.</li></ul>
+          </li>
+          <li>The fix is always the same: <mark>rebuild from empty</mark>.</li>
+        </ul>
+      </div>
+      <div class="foot">
+        <span class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><path d="M3 9h18"/></svg>
+          halcyon
+        </span>
+        <span>11</span>
+      </div>
+    </div>
+    <div class="guides"><div class="cols"></div><div class="safe"></div><div class="baseline"></div></div>
+  </div>
+</figure>
+
+<!-- 9 - CODE -->
+<figure class="frame">
+  <figcaption class="frame-label"><b>9 · code slide</b> <span class="tag">paper</span> — seven lines, the stated maximum under a heading. Four highlight colours plus plain ink. No line numbers, no window chrome, no traffic lights.</figcaption>
+  <div class="slide g-paper">
+    <div class="content">
+      <div class="body">
+        <h2 class="heading">Reconcile, in full</h2>
+        <div class="heading-rule"></div>
+        <div class="codepanel">
+<pre><code><span class="t-com">// the index is derived, never authoritative</span>
+<span class="t-key">export function</span> <span class="t-fn">reconcile</span>(files: DeckFile[], db: Index) {
+  <span class="t-key">const</span> seen = <span class="t-key">new</span> <span class="t-fn">Set</span>&lt;<span class="t-key">string</span>&gt;();
+  <span class="t-key">for</span> (<span class="t-key">const</span> f <span class="t-key">of</span> files) <span class="t-fn">upsert</span>(db, f), seen.<span class="t-fn">add</span>(f.path);
+  <span class="t-fn">removeMissing</span>(db, seen);
+  <span class="t-key">return</span> db.<span class="t-fn">count</span>() === files.length;
+}</code></pre>
+        </div>
+      </div>
+      <div class="foot">
+        <span class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><path d="M3 9h18"/></svg>
+          halcyon
+        </span>
+        <span>18</span>
+      </div>
+    </div>
+    <div class="guides"><div class="cols"></div><div class="safe"></div><div class="baseline"></div></div>
+  </div>
+</figure>
+
+<!-- 10 - IMAGE -->
+<figure class="frame">
+  <figcaption class="frame-label"><b>10 · image slide</b> <span class="tag">paper · 4+4</span> — image in columns 5 to 8. The caption renders from the markdown title attribute only; <code>alt</code> is never printed on a slide. The cobalt plane stands in for the photograph this offline mockup cannot embed.</figcaption>
+  <div class="slide g-paper">
+    <div class="content">
+      <div class="body">
+        <div class="split">
+          <div class="col-4">
+            <h2 class="heading">What the graph looked like</h2>
+            <div class="heading-rule"></div>
+            <ul class="bullets">
+              <li>Row count flat for nine days.</li>
+              <li>Then a rename, and a fork.</li>
+            </ul>
+          </div>
+          <div class="col-4">
+            <figure class="figure">
+              <div class="plane"><p class="plane-note">image slot · 532 by 504 · jpg / png / gif · object-fit: cover</p></div>
+              <figcaption class="figcap">Row count against file count, nine days.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div class="foot">
+        <span class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><path d="M3 9h18"/></svg>
+          halcyon
+        </span>
+        <span>15</span>
+      </div>
+    </div>
+    <div class="guides"><div class="cols"></div><div class="safe"></div><div class="baseline"></div></div>
+  </div>
+</figure>
+
+</div>
+</body>
+</html>

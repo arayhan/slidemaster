@@ -1,0 +1,135 @@
+/* SlideMaster — SLIDE TEMPLATE tokens.
+ *
+ * These belong to the Marp theme, NOT to the app.
+ *
+ * This file is PLAIN CSS. It is handed to @marp-team/marp-core and is never run
+ * through Tailwind or PostCSS. A Tailwind class or an @apply written against these
+ * does nothing and throws nothing — see docs/rules/ui-styling.md.
+ *
+ * The authoritative table is docs/DESIGN.md. Every declaration below matches it
+ * exactly, and the check that proves it is in docs/tasks/1a-step-02-template-spec.md.
+ * Change the table first; a token that exists only here is a token nobody can audit.
+ *
+ * App-chrome tokens are --chrome-* and live in src/styles/tokens.css. The two sets
+ * are namespaced apart on purpose; docs/DESIGN.md says why.
+ */
+
+:root {
+  /* ---- Spacing -----------------------------------------------------------
+   * Steps 1-3 are type-level (inside a text group).
+   * Steps 4-7 are layout-level (between blocks, and margins).
+   * A value not on this list is a bug.
+   */
+  --slide-space-1: 8px;
+  --slide-space-2: 16px;
+  --slide-space-3: 24px;
+  --slide-space-4: 40px;
+  --slide-space-5: 64px;
+  --slide-space-6: 96px;
+  --slide-space-7: 128px;
+
+  /* ---- Canvas and grid ---------------------------------------------------
+   * 1280x720. Absolute; the template never reflows. /edit and /present scale
+   * the whole frame with transform: scale().
+   */
+  --slide-canvas-w: 1280px;
+  --slide-canvas-h: 720px;
+  --slide-safe-x: 64px;
+  --slide-safe-y: 36px;
+  --slide-margin-x: var(--slide-space-6);
+  --slide-margin-y: var(--slide-space-5);
+  --slide-col: 115px;
+  --slide-gutter: var(--slide-space-3);
+  --slide-content-w: calc(var(--slide-canvas-w) - 2 * var(--slide-margin-x));
+  --slide-content-h: calc(var(--slide-canvas-h) - 2 * var(--slide-margin-y));
+  --slide-foot-h: var(--slide-space-5);
+  --slide-body-h: calc(var(--slide-content-h) - var(--slide-foot-h) - var(--slide-space-3));
+  --slide-span-3: calc(3 * var(--slide-col) + 2 * var(--slide-gutter));
+  --slide-span-4: calc(4 * var(--slide-col) + 3 * var(--slide-gutter));
+  --slide-span-5: calc(5 * var(--slide-col) + 4 * var(--slide-gutter));
+  --slide-span-6: calc(6 * var(--slide-col) + 5 * var(--slide-gutter));
+
+  /* ---- Colour ------------------------------------------------------------
+   * Named by GROUND so misuse is visible at the call site.
+   * Three grounds, never more: paper = content, field = structural boundary,
+   * ink = someone else's voice.
+   */
+  --slide-ground-paper: #F4F4F2;
+  --slide-ground-field: #1B4DFF;
+  --slide-ground-ink: #14161A;
+
+  --slide-on-paper: #14161A;
+  --slide-on-paper-muted: #52565E;
+  --slide-on-paper-accent: #1B4DFF;
+
+  --slide-on-field: #FFFFFF;
+  --slide-on-field-muted: #DCE3F8;
+
+  --slide-on-ink: #FFFFFF;
+  --slide-on-ink-muted: #9AA0AC;
+  /* Not the same value as --slide-on-paper-accent: cobalt on near-black is 3.1:1,
+   * enough for a graphic, not for a line someone has to read. */
+  --slide-on-ink-accent: #8FA9FF;
+
+  --slide-surface: #E9E9E5;
+
+  /* ---- Code --------------------------------------------------------------
+   * Four colours plus plain ink. Anything a highlighter would give a fifth
+   * colour gets --slide-code-plain.
+   */
+  --slide-code-plain: var(--slide-on-paper);
+  --slide-code-keyword: var(--slide-on-paper-accent);
+  --slide-code-string: #1F6B3A;
+  --slide-code-literal: #A3200F;
+  --slide-code-comment: var(--slide-on-paper-muted);
+
+  /* ---- Type --------------------------------------------------------------
+   * No web fonts are fetched at runtime. Archivo is self-hosted; Charter and the
+   * mono stack resolve from the platform. Until the Archivo woff2 lands, the
+   * display stack degrades to the platform grotesk.
+   */
+  --slide-font-display: "Archivo", "Helvetica Neue", Helvetica, "Liberation Sans", Arial, sans-serif;
+  --slide-font-quote: Charter, "Bitstream Charter", "Charis SIL", Georgia, serif;
+  --slide-font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Body floor is 44px. Nothing below 40px carries information the audience must
+   * read from their seat — one stated exception, references entries at 32px,
+   * because that slide exists to be photographed. */
+  --slide-text-display: 128px;
+  --slide-text-xl: 86px;
+  --slide-text-lg: 58px;
+  --slide-text-md: 44px;
+  --slide-text-sm: 32px;
+  --slide-text-xs: 24px;
+
+  --slide-leading-display: 0.92;
+  --slide-leading-xl: 1.02;
+  --slide-leading-lg: 1.08;
+  --slide-leading-body: 1.35;
+  --slide-leading-sm: 1.4;
+
+  --slide-track-display: -0.03em;
+  --slide-track-lg: -0.015em;
+  --slide-track-body: 0em;
+  --slide-track-xs: 0.06em;
+
+  --slide-weight-display: 700;
+  --slide-weight-heading: 600;
+  --slide-weight-body: 400;
+  --slide-weight-strong: 700;
+
+  --slide-measure-display: 14ch;
+  --slide-measure-body: 46ch;
+  --slide-measure-quote: 22ch;
+
+  /* ---- Marks and geometry ------------------------------------------------ */
+  --slide-rule-hair: 1px;
+  --slide-rule-thick: 4px;
+  --slide-marker: 10px;
+  --slide-icon: 48px;
+  --slide-logo-h: 32px;
+  --slide-underline-offset: 8px;
+  --slide-qr: 240px;
+  --slide-radius: 0;
+  --slide-shadow: none;
+}

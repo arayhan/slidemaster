@@ -1,25 +1,98 @@
-/* SlideMaster design tokens -- starter values. Run /impeccable document --seed once you've picked a visual direction to replace these with real ones. */
+/* SlideMaster — APP CHROME tokens.
+ *
+ * These belong to /decks, /edit/:id and /present/:id. They do NOT belong to the
+ * slide template: slide tokens are --slide-* and live in src/theme/slide-tokens.css,
+ * which is plain CSS handed to Marp and never touched by Tailwind or PostCSS.
+ *
+ * The authoritative table is docs/DESIGN.md. Every declaration below matches it
+ * exactly, and the check that proves it is in docs/tasks/1a-step-02-template-spec.md.
+ * Adding a token is a change to the system: the table first, this file second.
+ *
+ * No dark mode in Phase 1. The tokens are shaped to allow one later; do not add a
+ * dark: variant or a theme toggle now (docs/rules/ui-styling.md).
+ */
 
 :root {
-  /* Color */
-  --color-bg: #ffffff;
-  --color-fg: #111111;
-  --color-accent: #2563eb;
-  --color-muted: #6b7280;
+  /* ---- Colour ------------------------------------------------------------
+   * The chrome is the paper register of the slide system with none of the field
+   * colour, so the frame does not compete with the picture. The values shared
+   * with --slide-* are shared on purpose: one family, two distances.
+   */
+  --chrome-bg: #F4F4F2;
+  --chrome-surface: #FFFFFF;
+  --chrome-scrim: #14161A;
 
-  /* Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
+  --chrome-fg: #14161A;
+  --chrome-fg-muted: #52565E;
+  --chrome-fg-on-accent: #FFFFFF;
+  --chrome-fg-on-scrim: #FFFFFF;
 
-  /* Space */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
+  --chrome-accent: #1B4DFF;
 
-  /* Typography */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  /* Two border tokens, not one. --chrome-border clears 3:1 and is for boundaries a
+   * user must perceive (inputs, card edges). --chrome-rule is 1.4:1 and is for
+   * dividers, which convey nothing and are exempt. Shipping one grey for both is
+   * how a form outline ends up invisible. */
+  --chrome-border: #8C8C86;
+  --chrome-rule: #D2D2CD;
+
+  /* Cobalt on ink is 3.1:1 — a focus ring that technically passes and practically
+   * vanishes. Inside the present overlay the ring flips to white (18.1:1). */
+  --chrome-focus: #1B4DFF;
+  --chrome-focus-on-scrim: #FFFFFF;
+
+  /* ---- Spacing -----------------------------------------------------------
+   * Six steps. The small end (4px, 8px) exists because a control has an inside;
+   * a slide has no controls, which is why --slide-space-* starts at 8px.
+   */
+  --chrome-space-1: 4px;
+  --chrome-space-2: 8px;
+  --chrome-space-3: 16px;
+  --chrome-space-4: 24px;
+  --chrome-space-5: 40px;
+  --chrome-space-6: 64px;
+
+  /* ---- Geometry ---------------------------------------------------------- */
+  --chrome-radius: 0;
+  /* The only shadow in the product: the present bar, which floats over content.
+   * Offset plus soft blur, because a zero-offset halo is decoration. */
+  --chrome-shadow-overlay: 0 4px 24px rgba(20, 22, 26, 0.32);
+
+  /* ---- Type --------------------------------------------------------------
+   * Charter is deliberately absent. Keeping the serif to the quote and references
+   * slides is what makes it mean something.
+   */
+  --chrome-font-ui: "Archivo", "Helvetica Neue", Helvetica, "Liberation Sans", Arial, sans-serif;
+  --chrome-font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --chrome-text-xs: 0.8125rem;
+  --chrome-text-sm: 0.875rem;
+  --chrome-text-md: 1rem;
+  --chrome-text-lg: 1.25rem;
+  --chrome-text-xl: 1.625rem;
+  --chrome-text-2xl: 2.25rem;
+
+  --chrome-leading-body: 1.5;
+  --chrome-leading-head: 1.2;
+
+  --chrome-weight-body: 400;
+  --chrome-weight-strong: 600;
+
+  --chrome-measure: 72ch;
+
+  /* ---- Layout ------------------------------------------------------------ */
+  --chrome-rail-w: 240px;
+  --chrome-overlay-h: 56px;
+  --chrome-thumb-w: 160px;
+  --chrome-thumb-h: 90px;
+  --chrome-target-min: 44px;
+  --chrome-focus-ring: 3px;
+
+  /* ---- Motion ------------------------------------------------------------
+   * One duration, one easing, and they are the whole budget. Slides never animate
+   * and there is no slide transition. Every use sits inside a
+   * prefers-reduced-motion: reduce guard (docs/rules/accessibility.md).
+   */
+  --chrome-motion-fast: 120ms;
+  --chrome-motion-ease: cubic-bezier(0.2, 0, 0, 1);
 }

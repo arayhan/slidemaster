@@ -28,6 +28,7 @@ src/routeTree.gen.ts
 # scratch references (see docs/references/README.md)
 docs/references/*
 !docs/references/README.md
+!docs/references/template-mockup.html
 
 # OS / editor
 .DS_Store
