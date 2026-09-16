@@ -1,2 +1,7 @@
+# pnpm 10+ blocks dependency lifecycle scripts unless the package is listed here.
+# better-sqlite3 is a native addon: without its install script it is installed but
+# never compiled or prebuild-downloaded, and fails to load at runtime with no
+# install-time error at all.
 allowBuilds:
   "esbuild": true
+  "better-sqlite3": true
