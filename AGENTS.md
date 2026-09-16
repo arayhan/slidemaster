@@ -85,8 +85,9 @@ slidemaster/
 ├── CLAUDE.md        # pointer to AGENTS.md, for Claude Code
 ├── docs/            # PRODUCT, PRD, architecture, DESIGN, PROGRESS.md, tasks/, references/
 │   └── rules/       # the coding rules - style, testing, git, security
-├── .claude/         # agents, skills, hooks, settings
+├── .claude/         # agents, skills, hooks, settings — Claude Code entry point
 │   └── commands/    # slash commands: tooling only the agent runs
+├── .agent/          # tool-neutral agent assets (skills, taste)
 ├── db/migrations/   # SQL, run manually
 ├── public/          # static assets — stays at the root; TanStack Start requires it there even with a src/ root
 └── src/

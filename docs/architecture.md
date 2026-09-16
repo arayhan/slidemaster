@@ -20,8 +20,9 @@ slidemaster/
 ├── CLAUDE.md        # pointer to AGENTS.md, for Claude Code
 ├── docs/            # PRODUCT, PRD, architecture, DESIGN, PROGRESS.md, tasks/, references/
 │   └── rules/       # the coding rules - style, testing, git, security
-├── .claude/         # agents, skills, hooks, settings
+├── .claude/         # agents, skills, hooks, settings — Claude Code entry point
 │   └── commands/    # slash commands: tooling only the agent runs
+├── .agent/          # tool-neutral agent assets (skills, taste)
 ├── db/migrations/   # SQL, run manually
 ├── public/          # static assets — stays at the root; TanStack Start requires it there even with a src/ root
 └── src/
@@ -36,7 +37,7 @@ slidemaster/
     └── utils/       # own helpers (error, formatter)
 ```
 
-`db/`, `docs/`, `.claude/`, and `public/` stay at the repo root. All but `public/` are outside the build entirely; `public/` is there because TanStack Start serves it from the project root and does not follow it into `src/`.
+`db/`, `docs/`, `.claude/`, `.agent/`, and `public/` stay at the repo root. All but `public/` are outside the build entirely; `public/` is there because TanStack Start serves it from the project root and does not follow it into `src/`.
 
 A `scripts/` folder is **not** scaffolded. Create one only for tooling the product needs — a migration runner, a deploy step. Tooling only the agent runs belongs in `.claude/commands/` (the prompt) and `.claude/scripts/` (any executable it calls), never in `package.json`, where it becomes a script every human developer scrolls past forever.
 
