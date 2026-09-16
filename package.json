@@ -12,7 +12,9 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "generate-routes": "tsr generate"
+    "generate-routes": "tsr generate",
+    "db:migrate": "node scripts/db-migrate.mjs",
+    "db:rebuild": "node scripts/db-migrate.mjs --rebuild"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.170.0",
