@@ -67,18 +67,33 @@ resolved, CI is manual, and a red commit can land on `main` unnoticed.**
 
 ## Sign-off
 
-- [ ] Production build runs and serves the library: `____________________`
-- [ ] Round-trip survives a restart
-- [ ] Clean-checkout install verified on: `____________________` (date)
-- [ ] Runs with no `.env`
-- [ ] CI green on a pushed commit: `____________________` (run URL or SHA)
-- [ ] Approved to close Phase 0 by: `____________________` (Date: `__________`)
+- [x] Production build runs and serves the library: `node .output/server/index.mjs`
+- [x] Round-trip survives a restart
+- [x] Clean-checkout install verified on: `2026-09-17`
+- [x] Runs with no `.env`
+- [x] CI green on a pushed commit: [run 35174301117](https://github.com/arayhan/slidemaster/actions/runs/35174301117) (`cf4199d`)
+- [x] Approved to close Phase 0 by: `arayhan` (Date: `2026-09-17`)
 
 Outcome / conditions attached to the approval:
 
 ```
-____________________________________________________________
-____________________________________________________________
+Approved with question 6 unproven and accepted as a known risk: db:migrate is
+run manually and nothing enforces that it has been. The app does not check, by
+design (sql-and-data.md forbids assuming a migration has been applied), so a
+developer who skips it gets a missing-table error rather than a clear message.
+Acceptable for a single-user tool on one machine; revisit if that changes.
+
+Question 3 found and fixed a real defect during this gate: pnpm typecheck passed
+locally and failed on a fresh clone, because src/routeTree.gen.ts is generated
+and gitignored. Fixed by `tsr generate && tsc --noEmit`.
+
+CI does not trigger on push. The workflow is registered, active, on the default
+branch, with Actions enabled — and GitHub scheduled zero runs from push. Manual
+dispatch works and ran green. Cause is outside the repo and unresolved, so CI is
+effectively manual and a red commit can land on main unnoticed. Accepted for now;
+tracked in docs/STATE.md.
 ```
+
+**Phase 0 closed 2026-09-17.**
 
 **Blocks:** 1a-gate-template, Phase 1b

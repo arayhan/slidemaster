@@ -688,7 +688,7 @@ mark {
 
 <!-- 5 - REFERENCES -->
 <figure class="frame">
-  <figcaption class="frame-label"><b>5 · references</b> <span class="tag">paper · 4+4 · Charter</span> — six entries, the stated capacity under a heading. The one slide allowed below the body floor, because it exists to be photographed. Entry 6 has no <code>url</code>.</figcaption>
+  <figcaption class="frame-label"><b>5 · references</b> <span class="tag">paper · 4+4 · Charter</span> — six entries — the corrected capacity, which holds only because every entry fits two lines. A three-line entry drops the column to two. The one slide allowed below the body floor, because it exists to be photographed. Entry 6 has no <code>url</code>.</figcaption>
   <div class="slide g-paper">
     <div class="content">
       <div class="body">
@@ -696,8 +696,8 @@ mark {
         <div class="heading-rule"></div>
         <ol class="refs">
           <li><span class="n">1</span>Okonjo, M. <em>Notes on Durable Systems.</em> Cormorant Press, 2019.<span class="u">example.invalid/durable</span></li>
-          <li><span class="n">2</span>Vasquez, D. “Reconciliation loops that terminate.” <em>Journal of Boring Infrastructure</em> 11 (2).<span class="u">example.invalid/loops</span></li>
-          <li><span class="n">3</span>Håkansson, L. <em>Derived State Considered Temporary.</em> Talk, 2024.<span class="u">example.invalid/derived</span></li>
+          <li><span class="n">2</span>Vasquez, D. “Loops that terminate.” <em>J. Boring Infra</em> 11 (2).<span class="u">example.invalid/loops</span></li>
+          <li><span class="n">3</span>Håkansson, L. <em>Derived State Is Temporary.</em> Talk, 2024.<span class="u">example.invalid/derived</span></li>
           <li><span class="n">4</span>Adeyemi, F. “Rebuild is the only test.” Blog post, March 2025.<span class="u">example.invalid/rebuild</span></li>
           <li><span class="n">5</span>Brandt, I. <em>The Filesystem Is the Database.</em> Kestrel, 2022.<span class="u">example.invalid/fsdb</span></li>
           <li><span class="n">6</span>Internal postmortem, conference deck incident, 2026.</li>
@@ -771,7 +771,7 @@ mark {
 
 <!-- 8 - DEFAULT CONTENT -->
 <figure class="frame">
-  <figcaption class="frame-label"><b>8 · default content</b> <span class="tag">paper</span> — heading, the cobalt signature rule, and five bullets at the capacity limit. Shows bold, the <code>==highlight==</code> underline, inline code, and one level of nesting.</figcaption>
+  <figcaption class="frame-label"><b>8 · default content</b> <span class="tag">paper</span> — heading, the cobalt signature rule, and five bullets and five rendered lines, one under the measured six-line floor. Shows bold, the <code>==highlight==</code> underline, inline code, and one level of nesting.</figcaption>
   <div class="slide g-paper">
     <div class="content">
       <div class="body">
@@ -780,7 +780,7 @@ mark {
         <ul class="bullets">
           <li>A file is renamed on disk while nothing is watching.</li>
           <li>A reconcile writes rows but <strong>never deletes</strong> them.</li>
-          <li>Two writers disagree about <code>updated_at</code>.
+          <li>Two writers disagree on <code>updated_at</code>.
             <ul><li>The later write wins, and it is wrong.</li></ul>
           </li>
           <li>The fix is always the same: <mark>rebuild from empty</mark>.</li>
@@ -800,7 +800,7 @@ mark {
 
 <!-- 9 - CODE -->
 <figure class="frame">
-  <figcaption class="frame-label"><b>9 · code slide</b> <span class="tag">paper</span> — seven lines, the stated maximum under a heading. Four highlight colours plus plain ink. No line numbers, no window chrome, no traffic lights.</figcaption>
+  <figcaption class="frame-label"><b>9 · code slide</b> <span class="tag">paper</span> — seven lines, the stated maximum under a heading, and every line inside the measured 55-character width. Four highlight colours plus plain ink. No line numbers, no window chrome, no traffic lights.</figcaption>
   <div class="slide g-paper">
     <div class="content">
       <div class="body">
@@ -808,9 +808,9 @@ mark {
         <div class="heading-rule"></div>
         <div class="codepanel">
 <pre><code><span class="t-com">// the index is derived, never authoritative</span>
-<span class="t-key">export function</span> <span class="t-fn">reconcile</span>(files: DeckFile[], db: Index) {
+<span class="t-key">export function</span> <span class="t-fn">reconcile</span>(files: Deck[], db: Index) {
   <span class="t-key">const</span> seen = <span class="t-key">new</span> <span class="t-fn">Set</span>&lt;<span class="t-key">string</span>&gt;();
-  <span class="t-key">for</span> (<span class="t-key">const</span> f <span class="t-key">of</span> files) <span class="t-fn">upsert</span>(db, f), seen.<span class="t-fn">add</span>(f.path);
+  files.<span class="t-fn">forEach</span>(f =&gt; (<span class="t-fn">upsert</span>(db, f), seen.<span class="t-fn">add</span>(f.id)));
   <span class="t-fn">removeMissing</span>(db, seen);
   <span class="t-key">return</span> db.<span class="t-fn">count</span>() === files.length;
 }</code></pre>

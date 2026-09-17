@@ -146,19 +146,31 @@ is designed is what renders.
 Stated because a spec that does not say how much fits is a spec that gets violated on the
 third deck.
 
+> **Corrected 2026-09-17 against a render.** The numbers below were originally
+> derived arithmetically and had never been drawn. Rendering the mockup headless at
+> 1280x720 broke three of them. The working column now says *measured* where a
+> number came off the screen and *derived* where it did not.
+>
+> **The content floor is 624px**, where the logo and slide number begin. Content is
+> not clipped at 720 — it collides with the footer at 624, which is why a check
+> against the slide box alone reports clean.
+
 | Slide | Fits | Working |
 |---|---|---|
-| Content slide, heading + bullets | heading plus **~6 lines** of body ≈ 5 bullets | 504 − 91 heading block − 40 gap = 373px ÷ 59.4px per line |
-| Code slide, no heading | **10 lines** of code | (504 − 48 panel padding) ÷ 44.8px |
-| Code slide, under a heading | **7 lines** of code | (373 − 48) ÷ 44.8px |
-| References, with a heading | **~6 entries** | 373px ÷ ~115px per entry, two columns |
-| References, no heading | **~9 entries** | 504px ÷ ~115px per entry, two columns |
-| Title / closing at `--slide-text-display` | **2 lines**, ~15 characters each | 504 − 190 meta block = 314px ÷ 117.8px per line |
-| Title / closing at `--slide-text-xl` | **3 lines**, ~21 characters each | 314px ÷ 87.7px per line |
+| Content slide, heading + bullets | **6 lines** of body, hard | *Measured.* Region 257→624 = 367px; a one-line bullet occupies 59px. Six lines end at 618px, leaving **6px**. Count every wrapped line and every nested item as a line — five bullets where one wraps and one nests is already six |
+| Code slide, under a heading | **7 lines**, and **55 characters** | *Measured.* Seven lines fit vertically. Width is the real limit and was missing entirely: the block is 1040px at 32px mono, and 55 characters fit. The mockup's longest line is 57 and clips — `scrollWidth` 1069 against `clientWidth` 1040 |
+| Code slide, no heading | **10 lines**, 55 characters | Vertical *derived* — (504 − 48 panel padding) ÷ 44.8px. Width as above |
+| References, with a heading | **4 entries**, or **6 if every entry fits 2 lines** | *Measured.* Column region 195→624 = 429px. A two-line entry is 123px, a three-line entry is 168px, gap 16px. Three two-line entries fit per column; a third three-line entry ends at 686px, 62px into the footer. The old "~115px per entry" underestimated every case |
+| References, no heading | **~6 entries** | *Derived*, and suspect — scale the corrected per-entry heights, not the old 115px |
+| Title / closing at `--slide-text-display` | **2 lines**, ~15 characters each | *Derived.* 504 − 190 meta block = 314px ÷ 117.8px per line |
+| Title / closing at `--slide-text-xl` | **3 lines**, ~21 characters each | *Derived.* 314px ÷ 87.7px per line |
 
-Every one of those is arithmetic on the region heights above, not an estimate. If 1b's
-render disagrees with a number here, one of the two is wrong and it is worth finding out
-which before the third deck.
+**Entries and bullets are the wrong unit; lines are the right one.** Every number
+that broke did so because one item wrapped. State capacity in lines, count wraps,
+and the arithmetic stops lying.
+
+The rows still marked *derived* have not been rendered. Treat them the way the three
+corrected rows deserved to be treated: as claims, until something draws them.
 
 **The template never auto-shrinks to fit.** Content that exceeds the region overflows,
 visibly. The fix is the author splitting the slide, which is a *content* decision, not a

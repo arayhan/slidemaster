@@ -30,35 +30,48 @@ Do not leave these unasked:
 
 ## Evidence — the mockup rendered, 2026-09-17
 
-Rendered headless at 1280x720 and measured. All ten frames draw. Four screenshots
-are tracked under `docs/references/shots/`.
+Rendered headless at 1280x720 and measured. All ten frames draw. Screenshots are
+tracked under `docs/references/shots/`.
 
-**Three defects, and every one of them is at a capacity `docs/DESIGN.md` states as
-safe.** That makes the capacity table wrong, not the content unlucky.
+**The first render broke three capacity numbers, each at a figure
+`docs/DESIGN.md` called safe.** That made the capacity table wrong, not the
+specimen content unlucky.
 
-| Frame | Stated capacity | What happens |
+| Frame | Was stated | What actually happened |
 |---|---|---|
-| 5 `references` | "six entries, the stated capacity under a heading" | Entry 3's title and its URL **collide with the footer**. "2024." overprints the `halcyon` logo |
-| 8 default content | "five bullets at the capacity limit" | The last bullet, "rebuild from empty", **collides with the footer** |
-| 9 code | "seven lines, the stated maximum under a heading" | The code block overflows **29px horizontally** and clips: `scrollWidth` 1069 against `clientWidth` 1040. Line 4 loses its closing characters |
+| 5 `references` | "six entries, the stated capacity" | Entry 3's title and URL collided with the footer; "2024." overprinted the logo. The old per-entry estimate of 115px underestimated every real entry (measured 123px at two lines, 168px at three) |
+| 8 default content | "five bullets at the capacity limit" | Six rendered lines ended at 618px against a 624px floor — 6px of clearance, and the `==highlight==` underline crossed into the footer band |
+| 9 code | "seven lines, the stated maximum" | The block clipped 29px horizontally: `scrollWidth` 1069 against `clientWidth` 1040. **Width was missing from the table entirely**, and line 2 at 57 characters was the overrun |
 
-Measured, not eyeballed: slides are exactly 1280x720 with `scrollHeight` equal to
-`clientHeight`, so nothing spills off-canvas — content collides with the footer
-region instead, which is why a check against the slide box alone reports clean.
+**All three are fixed and re-measured.** `docs/DESIGN.md`'s capacity table now
+carries measured numbers, marks every remaining row as *derived*, and states the
+rule the failures share: **entries and bullets are the wrong unit, lines are the
+right one.** Every number that broke did so because one item wrapped.
+
+Re-render after the corrections: **all ten frames clean** — no footer collision,
+no clipping, nothing off-canvas.
+
+The measurement that matters is not the obvious one. Slides are exactly 1280x720
+with `scrollHeight` equal to `clientHeight`, so nothing spills off-canvas and a
+check against the slide box reports clean. The collision is with the footer
+region, which begins at **624px**.
 
 **This could not have been found any other way.** The agent that wrote the spec
-had no browser and said so; the capacity numbers were derived arithmetically from
-region heights and never rendered.
+had no browser and said so; the numbers were arithmetic on region heights and had
+never been drawn.
 
-**The display face is still absent.** Computed font resolves to `Archivo,
-"Helvetica Neue", Helvetica, "Liberation Sans", Arial, sans-serif` — Archivo is
-not in the repo, so every frame above is the fallback. Judge the type only after
-`Open question 1` is settled and the `woff2` lands.
+## Still open before this can be signed
 
-**Question 1 is still unanswered.** These frames are specimen content. No real past
-talk has been poured into them, so "where did the template fight the content"
-remains untested — and the three defects above are the argument for doing it
-before signing, not after.
+**The display face is absent.** Computed font resolves to `Archivo, "Helvetica
+Neue", Helvetica, "Liberation Sans", Arial, sans-serif` — Archivo is not in the
+repo, so every frame is the fallback. Judge the type only after *Open question 1*
+is settled and the `woff2` lands.
+
+**Question 1 is unanswered.** These are specimen frames. No real past talk has
+been poured into them, so "where did the template fight the content" is untested.
+The three defects above are the argument for doing that before signing, not after
+— they were found with contrived content that was *designed* to sit at capacity.
+Real content wanders further.
 
 ## Sign-off
 
