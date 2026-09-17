@@ -10,7 +10,7 @@
     "build": "vite build",
     "start": "node .output/server/index.mjs",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsr generate && tsc --noEmit",
     "test": "vitest run",
     "generate-routes": "tsr generate",
     "db:migrate": "node scripts/db-migrate.mjs",
