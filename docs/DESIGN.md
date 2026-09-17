@@ -226,10 +226,11 @@ Three families, each with a job it is the only candidate for.
 | `--slide-font-quote` | Charter → Georgia | `quote` and `references` only | Carter designed Charter for **low-resolution output devices**. A projector is a low-resolution output device. It also signals "not the speaker's words" without a second device |
 | `--slide-font-mono` | System mono stack | Fenced code, inline code, file paths | Code needs a fixed advance width. A mono's *character* contributes nothing that syntax highlighting does not already do, so a self-hosted one would be cost without return |
 
-**No web fonts are fetched at runtime.** Archivo ships as a self-hosted `woff2` in the
-repo; Charter and the mono stack resolve from the platform. See *Open questions for the
-gate* #1 — the Archivo file is not yet in the repo, so the mockup currently renders in
-the fallback stack, and the gate reviewer must be told that before they judge the type.
+**No web fonts are fetched at runtime.** Archivo is self-hosted at
+`public/fonts/archivo-variable-latin.woff2` (variable, latin subset, 88KB, SIL OFL 1.1 —
+licence at `public/fonts/OFL.txt`); Charter and the mono stack resolve from the platform.
+The mockup embeds the same file as a `data:` URI so it stays a single offline-complete
+file. See *Decisions* #1.
 
 ---
 
@@ -900,37 +901,35 @@ Two things the reviewer must know before judging it:
 
 ---
 
-## Open questions for the gate
+## Decisions — settled at the gate, 2026-09-17
 
-The system below is settled; these four are not, and each is the owner's call rather than
-the designer's. Every one has a stated default, so none of them blocks 1b from starting.
+These four were open. They are the owner's calls, not the designer's, and each was
+taken deliberately rather than inherited by default. Reasoning kept, because the
+reasoning is what a later reader needs to reverse one safely.
 
-1. **Ship Archivo self-hosted, or accept the platform grotesk?**
-   Self-hosting is two `woff2` files in `public/fonts/`, roughly 120KB, zero network at
-   runtime, and it embeds cleanly in the Phase 2 PDF export. The fallback — Helvetica
-   Neue / Liberation Sans / Arial — works everywhere and costs nothing, but it is the
-   platform sans doing display duty, which is the difference between a template with a
-   voice and Marp's default with different margins.
-   *Default if unanswered: ship Archivo.* **The mockup currently shows the fallback.**
+**1. Archivo ships, self-hosted.**
+`public/fonts/archivo-variable-latin.woff2`, 88KB, variable across `wdth` 62-125
+and `wght` 100-900, latin subset. SIL OFL 1.1, licence vendored at
+`public/fonts/OFL.txt`. No web font is fetched at runtime; the mockup embeds the
+same file as a `data:` URI so one file stays offline-complete. The alternative was
+the platform grotesk doing display duty, which is the difference between a
+template with a voice and Marp's default with different margins.
 
-2. **Is the word "References" content or chrome?**
-   `docs/PRODUCT.md` says the app never invents a headline. The spec above therefore
-   supplies no default heading on a `references` slide. A reasonable owner may decide that
-   a structural label on a structural slide is template chrome, not authored content.
-   *Default if unanswered: no default heading.*
+**2. No default "References" heading.**
+The app never supplies a headline, including a structural one on a structural
+slide. The looser reading — that a label on a `references` slide is chrome rather
+than content — is defensible, and it was rejected because the moment the template
+may write one word it may write two, and `docs/PRODUCT.md`'s line is easier to
+hold at zero than at one.
 
-3. **May `profile.name` fall back to the deck-level `speaker`?**
-   The spec allows it, on the reading that reusing an authored value is not inference. The
-   stricter reading is that the app should render nothing the `profile` block did not
-   supply.
-   *Default if unanswered: the fallback is allowed.*
+**3. `profile.name` may fall back to the deck-level `speaker`.**
+Reusing a value the author already wrote is not inference. Nothing is invented:
+if neither key exists, nothing renders.
 
-4. **May a `contact` QR be generated from a URL?**
-   Generating a QR is arguably derivation, not fabrication — but it is an image the app
-   puts on a slide that the author did not supply. The spec forbids it.
-   *Default if unanswered: the author supplies the image.*
-
-And one thing the gate cannot skip, which is not a question but a gap:
+**4. A contact QR is author-supplied, never generated.**
+Generating one from a URL is arguably derivation rather than fabrication, but it
+puts an image on a slide that the author did not supply, and the author cannot see
+what it encodes without scanning it. The spec forbids it.
 
 > **`1a-gate-template` question 1 asks whether the mockup renders a *real past
 > presentation*. It does not — it renders specimen content.** No real deck exists in this

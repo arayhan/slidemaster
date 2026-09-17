@@ -94,9 +94,16 @@ node -e "const s=require('fs').readFileSync('docs/references/template-mockup.htm
 
 ```bash
 rg -c "<script" docs/references/template-mockup.html        # expect NO matches
-rg "https?://" docs/references/template-mockup.html         # expect NO matches
-rg -c "src=|@import|url\(" docs/references/template-mockup.html   # expect NO matches
+node -e "const s=require('fs').readFileSync('docs/references/template-mockup.html','utf8');const all=[...s.matchAll(/url\(/g)].length,data=[...s.matchAll(/url\(data:/g)].length,net=[...s.matchAll(/https?:\/\//g)].length,imp=[...s.matchAll(/@import/g)].length,src=[...s.matchAll(/\ssrc=/g)].length;const ok=all===data&&!net&&!imp&&!src;console.log(ok?'OK - offline-complete':'FAIL net='+net+' import='+imp+' src='+src+' non-data url='+(all-data));process.exit(ok?0:1)"
 ```
+
+**Criterion 6 was rewritten 2026-09-17.** It previously grepped for
+`src=|@import|url\(` and expected no matches at all. That is a *proxy* for the
+property that matters — makes no network request — and the proxy was too strict:
+shipping the self-hosted Archivo needs an `@font-face`, and an `@font-face` needs
+`url()` even when the payload is an inline `data:` URI that fetches nothing. The
+check now asserts the property instead of the proxy: no `https?://`, no `@import`,
+no `src=` attribute, and every `url(` must be a `url(data:`.
 
 **7 — placeholder content is marked exactly once and enumerated.** `AGENTS.md` hard rule 2
 requires `rg "TODO\(content\)"` to find the complete set and nothing else; one marker
