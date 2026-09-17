@@ -52,10 +52,18 @@ Phase 1a's gate and, through it, Phase 1b.
 |---|---|
 | 1 | **Verified.** `node .output/server/index.mjs` served `/` with the deck library; `.output/server/node_modules/better-sqlite3/build/Release/better_sqlite3.node` present |
 | 2 | **Verified.** Frontmatter edits, additions, deletions and restores all reflected against the built server |
-| 3 | **Not verified.** No clean checkout has been done |
+| 3 | **Verified, and it found a real defect.** `git clone` + `pnpm install --frozen-lockfile` + `pnpm db:migrate` + all four checks. `pnpm typecheck` failed on the fresh clone while passing locally — `src/routeTree.gen.ts` is generated and gitignored, so it exists only on a machine that has built. Fixed by `tsr generate && tsc --noEmit`. The native addon built at `node_modules/better-sqlite3/build/Release/better_sqlite3.node` |
 | 4 | **Verified.** No `.env` exists in the repo and never has; the app runs on the defaults |
-| 5 | **Not verified.** CI was only just changed to run four checks; no push has exercised it |
+| 5 | **Verified.** [Run 35174301117](https://github.com/arayhan/slidemaster/actions/runs/35174301117) on `cf4199d` — lint, typecheck, test, build all green on ubuntu-latest, Node 24, pnpm 11. Second confirmation of question 3 on a different OS |
 | 6 | **Believed clean**, not proven — `db:migrate` is the risk, since it is run manually and nothing enforces it |
+
+**One finding the owner should know before signing.** GitHub scheduled **no runs
+at all** from `push` despite the workflow being registered, active, and on the
+default branch, with Actions enabled and `allowed_actions: all` —
+`total_count` was 0 across every push. Adding `workflow_dispatch` and triggering
+by hand produced an immediate green run, so the workflow is sound and the trigger
+is not firing. Cause not established; it is outside the repo. **Until that is
+resolved, CI is manual, and a red commit can land on `main` unnoticed.**
 
 ## Sign-off
 
